@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Stocks Largest Position Changes</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-teal: #3FBDB8;
+            --primary-teal-dark: #2A9D98;
+            --primary-teal-light: #5FCFCA;
+            --bg-dark: #1a2332;
+            --bg-card: #0f1419;
+            --text-primary: #ffffff;
+            --text-secondary: #a8b4c4;
+            --row-even: #141c28;
+            --row-odd: #0d131a;
+            --border-color: #2a3a4a;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0f14 0%, #1a2332 50%, #0d1520 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .table-wrapper {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(63, 189, 184, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-dark) 100%);
+            padding: 20px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .table-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .table-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .table-header .date-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(180deg, #1e2a3a 0%, #162030 100%);
+        }
+
+        thead th {
+            padding: 16px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary-teal-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary-teal);
+            position: relative;
+        }
+
+        thead th::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--text-primary);
+            transition: width 0.3s ease;
+        }
+
+        thead th:hover::after {
+            width: 80%;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--row-even);
+        }
+
+        tbody tr:nth-child(odd) {
+            background: var(--row-odd);
+        }
+
+        tbody tr:hover {
+            background: rgba(63, 189, 184, 0.1);
+            transform: scale(1.002);
+        }
+
+        tbody td {
+            padding: 14px 20px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        tbody td.stock {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 600;
+            color: var(--primary-teal-light);
+            letter-spacing: 1px;
+        }
+
+        tbody td.strike {
+            color: var(--text-primary);
+        }
+
+        tbody td.type {
+            font-weight: 600;
+        }
+
+        tbody td.type.put {
+            color: var(--accent-red);
+        }
+
+        tbody td.type.call {
+            color: var(--accent-green);
+        }
+
+        tbody td.exp {
+            color: var(--text-secondary);
+        }
+
+        tbody td.iv {
+            color: #fbbf24;
+            font-weight: 500;
+        }
+
+        tbody td.volume {
+            color: var(--text-primary);
+        }
+
+        tbody td.volume.highlight {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .footer {
+            padding: 16px 32px;
+            background: linear-gradient(180deg, #0a0f14 0%, #0d1419 100%);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 24px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.put { background: var(--accent-red); }
+        .legend-dot.call { background: var(--accent-green); }
+
+        .data-source {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .data-source a {
+            color: var(--primary-teal);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .table-wrapper {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 800px;
+            }
+            
+            .table-header h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        .zero-value {
+            color: #4a5568;
+        }
+        /* Footer Styles */
+        .footer {
+            margin-top: 40px;
+            padding: 32px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .footer-disclaimer {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .legal-disclaimer {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .legal-disclaimer p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .legal-disclaimer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .legal-disclaimer strong {
+            color: #e2e8f0;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #334155;
+            font-size: 0.7rem !important;
+            color: #64748b !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-header">
+                <h1>Single Stocks Largest Position Changes <span class="date-badge">01/02/26</span></h1>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stock</th>
+                        <th>Strike</th>
+                        <th>Type</th>
+                        <th>Exp</th>
+                        <th>IV</th>
+                        <th>BTO</th>
+                        <th>BTC</th>
+                        <th>STO</th>
+                        <th>STC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stock">NVDA</td>
+                        <td class="strike">185.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">42.18%</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">3,241</td>
+                        <td class="volume highlight">52,847</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">NVDA</td>
+                        <td class="strike">190.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">41.52%</td>
+                        <td class="volume highlight">48,329</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">15</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">TSLA</td>
+                        <td class="strike">430.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/10/26</td>
+                        <td class="iv">58.73%</td>
+                        <td class="volume">31,456</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">8</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">TSLA</td>
+                        <td class="strike">450.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">56.21%</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume highlight">44,892</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">1,247</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">AAPL</td>
+                        <td class="strike">270.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">24.35%</td>
+                        <td class="volume">18,234</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">42</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">AAPL</td>
+                        <td class="strike">275.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">02/21/26</td>
+                        <td class="iv">23.87%</td>
+                        <td class="volume highlight">35,671</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">3</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">AMZN</td>
+                        <td class="strike">225.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">31.42%</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">2,891</td>
+                        <td class="volume highlight">38,456</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">META</td>
+                        <td class="strike">650.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">33.18%</td>
+                        <td class="volume">22,145</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">67</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">GOOGL</td>
+                        <td class="strike">315.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">27.63%</td>
+                        <td class="volume">19,872</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">12</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">AMD</td>
+                        <td class="strike">220.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">48.92%</td>
+                        <td class="volume highlight">41,238</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">5</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">AMD</td>
+                        <td class="strike">225.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">02/21/26</td>
+                        <td class="iv">47.15%</td>
+                        <td class="volume">28,934</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">18</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">MSFT</td>
+                        <td class="strike">470.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">22.14%</td>
+                        <td class="volume">15,678</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">89</td>
+                        <td class="volume zero-value">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">MSFT</td>
+                        <td class="strike">480.00</td>
+                        <td class="type call">C</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">21.87%</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume highlight">33,421</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">2,156</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">NFLX</td>
+                        <td class="strike">90.00</td>
+                        <td class="type put">P</td>
+                        <td class="exp">01/17/26</td>
+                        <td class="iv">35.28%</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume zero-value">0</td>
+                        <td class="volume">1,456</td>
+                        <td class="volume highlight">27,893</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="footer">
+                <div class="footer-left">
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-dot put"></span>
+                            <span>Put</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot call"></span>
+                            <span>Call</span>
+                        </div>
+                    </div>
+                    <div class="legend" style="margin-left: 20px; padding-left: 20px; border-left: 1px solid var(--border-color);">
+                        <span>BTO: Buy to Open</span>
+                        <span>BTC: Buy to Close</span>
+                        <span>STO: Sell to Open</span>
+                        <span>STC: Sell to Close</span>
+                    </div>
+                </div>
+                <div class="data-source">
+                    Last Trading Day: 01/02/2026 · Sample Data
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

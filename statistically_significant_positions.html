@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistically Significant Positions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: #666666;
+            font-style: italic;
+        }
+
+        .table-wrapper {
+            background: #ffffff;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #808080;
+        }
+
+        thead th {
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #ffffff;
+            border-right: 1px solid #999999;
+        }
+
+        thead th:last-child {
+            border-right: none;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        tbody td {
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #333333;
+            border-right: 1px solid #eeeeee;
+        }
+
+        tbody td:last-child {
+            border-right: none;
+        }
+
+        tbody td.symbol {
+            font-weight: 600;
+        }
+
+        tbody td.high-percentile {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        tbody td.low-percentile {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        tbody td.mid-percentile {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .table-wrapper {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 800px;
+            }
+        }
+        /* Footer Styles */
+        .footer {
+            margin-top: 40px;
+            padding: 32px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .footer-disclaimer {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .legal-disclaimer {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .legal-disclaimer p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .legal-disclaimer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .legal-disclaimer strong {
+            color: #e2e8f0;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #334155;
+            font-size: 0.7rem !important;
+            color: #64748b !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Statistically Significant Positions</h1>
+            <p>The following stocks show statistically extreme options flow based on historical patterns.</p>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Sector</th>
+                        <th>Delta ($M,%'ile)</th>
+                        <th>Gamma ($M,%'ile)</th>
+                        <th>Vega ($M,%'ile)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="symbol">NVDA</td>
+                        <td>Technology</td>
+                        <td class="high-percentile">$42.8M, 98th</td>
+                        <td class="high-percentile">$8.4M, 95th</td>
+                        <td class="high-percentile">$4.8M, 92nd</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">TSLA</td>
+                        <td>Consumer Cyclical</td>
+                        <td class="low-percentile">-$38.2M, 8th</td>
+                        <td class="mid-percentile">$5.8M, 67th</td>
+                        <td class="high-percentile">$5.2M, 89th</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">AMD</td>
+                        <td>Technology</td>
+                        <td class="high-percentile">$31.5M, 96th</td>
+                        <td class="high-percentile">$4.9M, 91st</td>
+                        <td class="high-percentile">$3.6M, 88th</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">SPY</td>
+                        <td>Equity ETF</td>
+                        <td class="low-percentile">-$24.1M, 12th</td>
+                        <td class="high-percentile">$6.2M, 94th</td>
+                        <td class="low-percentile">-$2.9M, 15th</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">AAPL</td>
+                        <td>Technology</td>
+                        <td class="high-percentile">$28.4M, 87th</td>
+                        <td class="mid-percentile">$3.1M, 72nd</td>
+                        <td class="mid-percentile">$1.5M, 65th</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">META</td>
+                        <td>Communication Services</td>
+                        <td class="high-percentile">$22.8M, 85th</td>
+                        <td class="low-percentile">-$3.4M, 18th</td>
+                        <td class="high-percentile">$2.4M, 78th</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">GOOGL</td>
+                        <td>Communication Services</td>
+                        <td class="high-percentile">$19.2M, 82nd</td>
+                        <td class="mid-percentile">$2.7M, 68th</td>
+                        <td class="mid-percentile">$1.8M, 71st</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">QQQ</td>
+                        <td>Equity ETF</td>
+                        <td class="high-percentile">$18.5M, 79th</td>
+                        <td class="low-percentile">-$4.5M, 22nd</td>
+                        <td class="low-percentile">-$2.1M, 25th</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">MSFT</td>
+                        <td>Technology</td>
+                        <td class="low-percentile">-$16.7M, 14th</td>
+                        <td class="mid-percentile">$2.1M, 58th</td>
+                        <td class="mid-percentile">$1.1M, 52nd</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">IWM</td>
+                        <td>Equity ETF</td>
+                        <td class="high-percentile">$14.3M, 76th</td>
+                        <td class="mid-percentile">$3.8M, 74th</td>
+                        <td class="low-percentile">-$1.2M, 28th</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

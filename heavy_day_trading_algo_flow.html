@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heavy Day Trading/Algo Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: #666666;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .table-wrapper {
+            background: #ffffff;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #808080;
+        }
+
+        thead th {
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #ffffff;
+            border-right: 1px solid #999999;
+        }
+
+        thead th:last-child {
+            border-right: none;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        tbody td {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #333333;
+            border-right: 1px solid #eeeeee;
+        }
+
+        tbody td:last-child {
+            border-right: none;
+        }
+
+        tbody td.symbol {
+            font-weight: 600;
+        }
+
+        tbody td.high-ratio {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        tbody td.mid-ratio {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        tbody td.low-ratio {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .table-wrapper {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 900px;
+            }
+        }
+        /* Footer Styles */
+        .footer {
+            margin-top: 40px;
+            padding: 32px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .footer-disclaimer {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .legal-disclaimer {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .legal-disclaimer p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .legal-disclaimer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .legal-disclaimer strong {
+            color: #e2e8f0;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #334155;
+            font-size: 0.7rem !important;
+            color: #64748b !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Heavy Day Trading/Algo Flow</h1>
+            <p>This list shows names with high volume and both total and Synthetic Open Interest, which often indicates the presence of high frequency algos and/or speculative day trading.</p>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Total Volume</th>
+                        <th>Abs Synthetic Open Interest Change</th>
+                        <th>Total OI Day/Day Change</th>
+                        <th>Flow Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="symbol">SPY</td>
+                        <td>8,456,234</td>
+                        <td>2,345,678</td>
+                        <td>+456,789</td>
+                        <td class="high-ratio">3.61</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">QQQ</td>
+                        <td>4,567,890</td>
+                        <td>1,234,567</td>
+                        <td>+234,567</td>
+                        <td class="high-ratio">3.70</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">TSLA</td>
+                        <td>3,456,789</td>
+                        <td>987,654</td>
+                        <td>+178,234</td>
+                        <td class="high-ratio">3.50</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">NVDA</td>
+                        <td>2,987,654</td>
+                        <td>876,543</td>
+                        <td>+145,678</td>
+                        <td class="high-ratio">3.41</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">AMD</td>
+                        <td>2,345,678</td>
+                        <td>765,432</td>
+                        <td>+123,456</td>
+                        <td class="mid-ratio">3.06</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">AAPL</td>
+                        <td>1,987,654</td>
+                        <td>654,321</td>
+                        <td>+98,765</td>
+                        <td class="mid-ratio">3.04</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">IWM</td>
+                        <td>1,876,543</td>
+                        <td>567,890</td>
+                        <td>+87,654</td>
+                        <td class="mid-ratio">3.30</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">META</td>
+                        <td>1,654,321</td>
+                        <td>543,210</td>
+                        <td>+76,543</td>
+                        <td class="mid-ratio">3.04</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">MSFT</td>
+                        <td>1,543,210</td>
+                        <td>498,765</td>
+                        <td>+65,432</td>
+                        <td class="mid-ratio">3.09</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">GOOGL</td>
+                        <td>1,234,567</td>
+                        <td>432,109</td>
+                        <td>+54,321</td>
+                        <td class="low-ratio">2.86</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">AMZN</td>
+                        <td>1,123,456</td>
+                        <td>398,765</td>
+                        <td>+43,210</td>
+                        <td class="low-ratio">2.82</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">COIN</td>
+                        <td>987,654</td>
+                        <td>345,678</td>
+                        <td>+32,109</td>
+                        <td class="low-ratio">2.86</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">MSTR</td>
+                        <td>876,543</td>
+                        <td>312,456</td>
+                        <td>+28,765</td>
+                        <td class="low-ratio">2.80</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">PLTR</td>
+                        <td>765,432</td>
+                        <td>276,543</td>
+                        <td>+21,098</td>
+                        <td class="low-ratio">2.77</td>
+                    </tr>
+                    <tr>
+                        <td class="symbol">SOFI</td>
+                        <td>654,321</td>
+                        <td>234,567</td>
+                        <td>+18,765</td>
+                        <td class="low-ratio">2.79</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

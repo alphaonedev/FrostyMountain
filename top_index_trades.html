@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Index Trades</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .table-wrapper {
+            background: #ffffff;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #808080;
+        }
+
+        thead th {
+            padding: 12px 14px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #ffffff;
+            border-right: 1px solid #999999;
+        }
+
+        thead th:last-child {
+            border-right: none;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        tbody td {
+            padding: 11px 14px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #333333;
+            border-right: 1px solid #eeeeee;
+        }
+
+        tbody td:last-child {
+            border-right: none;
+        }
+
+        tbody td.stock {
+            font-weight: 600;
+        }
+
+        tbody td.positive {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        tbody td.negative {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        tbody td.premium {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* Spread ID color coding */
+        tbody td.spread-call-open { background: #dcfce7; }
+        tbody td.spread-call-close { background: #fef9c3; }
+        tbody td.spread-put-open { background: #fee2e2; }
+        tbody td.spread-put-close { background: #fce7f3; }
+        tbody td.spread-call-roll { background: #dbeafe; }
+        tbody td.spread-put-roll { background: #e0e7ff; }
+        tbody td.spread-short-strangle { background: #f3e8ff; }
+        tbody td.spread-long-strangle { background: #cffafe; }
+
+        @media (max-width: 1200px) {
+            .table-wrapper {
+                overflow-x: auto;
+            }
+            table {
+                min-width: 1300px;
+            }
+        }
+        /* Footer Styles */
+        .footer {
+            margin-top: 40px;
+            padding: 32px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .footer-disclaimer {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .legal-disclaimer {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .legal-disclaimer p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .legal-disclaimer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .legal-disclaimer strong {
+            color: #e2e8f0;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #334155;
+            font-size: 0.7rem !important;
+            color: #64748b !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Top Index Trades</h1>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stock</th>
+                        <th>Strike</th>
+                        <th>Type</th>
+                        <th>Exp</th>
+                        <th>Premium</th>
+                        <th>Stock Px</th>
+                        <th>IV</th>
+                        <th>BTO</th>
+                        <th>BTC</th>
+                        <th>STO</th>
+                        <th>STC</th>
+                        <th>Open Int</th>
+                        <th>1D Return</th>
+                        <th>5D Return</th>
+                        <th>Spread ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="stock">SPY</td>
+                        <td>685.00</td>
+                        <td>C</td>
+                        <td>01/10/26</td>
+                        <td class="premium">$38.5M</td>
+                        <td>683.17</td>
+                        <td>7.89%</td>
+                        <td>18</td>
+                        <td>24,532</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>234,567</td>
+                        <td class="positive">+0.18%</td>
+                        <td class="negative">-0.42%</td>
+                        <td class="spread-call-roll">Call Roll</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">SPY</td>
+                        <td>680.00</td>
+                        <td>C</td>
+                        <td>01/10/26</td>
+                        <td class="premium">$32.1M</td>
+                        <td>683.17</td>
+                        <td>8.12%</td>
+                        <td>32</td>
+                        <td>19,847</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>312,456</td>
+                        <td class="positive">+0.18%</td>
+                        <td class="negative">-0.42%</td>
+                        <td class="spread-call-open">Call Spread Open</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">QQQ</td>
+                        <td>600.00</td>
+                        <td>P</td>
+                        <td>03/20/26</td>
+                        <td class="premium">$28.9M</td>
+                        <td>613.12</td>
+                        <td>21.45%</td>
+                        <td>23,891</td>
+                        <td>0</td>
+                        <td>5</td>
+                        <td>0</td>
+                        <td>89,234</td>
+                        <td class="negative">-0.19%</td>
+                        <td class="negative">-1.23%</td>
+                        <td class="spread-long-strangle">Long Strangle</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">QQQ</td>
+                        <td>615.00</td>
+                        <td>C</td>
+                        <td>01/17/26</td>
+                        <td class="premium">$24.6M</td>
+                        <td>613.12</td>
+                        <td>18.92%</td>
+                        <td>0</td>
+                        <td>18,456</td>
+                        <td>0</td>
+                        <td>892</td>
+                        <td>178,234</td>
+                        <td class="negative">-0.19%</td>
+                        <td class="negative">-1.23%</td>
+                        <td class="spread-call-close">Call Spread Close</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">IWM</td>
+                        <td>248.00</td>
+                        <td>P</td>
+                        <td>01/17/26</td>
+                        <td class="premium">$16.5M</td>
+                        <td>248.78</td>
+                        <td>23.72%</td>
+                        <td>41,508</td>
+                        <td>0</td>
+                        <td>8</td>
+                        <td>0</td>
+                        <td>78,432</td>
+                        <td class="positive">+1.06%</td>
+                        <td class="positive">+2.87%</td>
+                        <td class="spread-short-strangle">Short Strangle</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">IWM</td>
+                        <td>245.00</td>
+                        <td>P</td>
+                        <td>01/17/26</td>
+                        <td class="premium">$14.2M</td>
+                        <td>248.78</td>
+                        <td>24.18%</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>4,892</td>
+                        <td>47,231</td>
+                        <td>125,678</td>
+                        <td class="positive">+1.06%</td>
+                        <td class="positive">+2.87%</td>
+                        <td class="spread-put-close">Put Spread Close</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">SPY</td>
+                        <td>690.00</td>
+                        <td>C</td>
+                        <td>03/20/26</td>
+                        <td class="premium">$12.8M</td>
+                        <td>683.17</td>
+                        <td>12.34%</td>
+                        <td>0</td>
+                        <td>18,234</td>
+                        <td>0</td>
+                        <td>567</td>
+                        <td>256,789</td>
+                        <td class="positive">+0.18%</td>
+                        <td class="negative">-0.42%</td>
+                        <td class="spread-call-close">Call Spread Close</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">IWM</td>
+                        <td>250.00</td>
+                        <td>P</td>
+                        <td>02/21/26</td>
+                        <td class="premium">$11.5M</td>
+                        <td>248.78</td>
+                        <td>21.84%</td>
+                        <td>22,145</td>
+                        <td>0</td>
+                        <td>12</td>
+                        <td>0</td>
+                        <td>45,678</td>
+                        <td class="positive">+1.06%</td>
+                        <td class="positive">+2.87%</td>
+                        <td class="spread-put-roll">Put Roll</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">QQQ</td>
+                        <td>620.00</td>
+                        <td>C</td>
+                        <td>03/20/26</td>
+                        <td class="premium">$9.8M</td>
+                        <td>613.12</td>
+                        <td>19.45%</td>
+                        <td>0</td>
+                        <td>14,567</td>
+                        <td>0</td>
+                        <td>234</td>
+                        <td>145,678</td>
+                        <td class="negative">-0.19%</td>
+                        <td class="negative">-1.23%</td>
+                        <td class="spread-call-roll">Call Roll</td>
+                    </tr>
+                    <tr>
+                        <td class="stock">IWM</td>
+                        <td>255.00</td>
+                        <td>C</td>
+                        <td>03/20/26</td>
+                        <td class="premium">$8.4M</td>
+                        <td>248.78</td>
+                        <td>20.34%</td>
+                        <td>0</td>
+                        <td>11,234</td>
+                        <td>0</td>
+                        <td>345</td>
+                        <td>56,789</td>
+                        <td class="positive">+1.06%</td>
+                        <td class="positive">+2.87%</td>
+                        <td class="spread-call-close">Call Spread Close</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

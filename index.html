@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-Powered Options Flow Analysis Dashboard - Non-Human Intelligence for Market Edge">
+    <meta name="keywords" content="options trading, AI analysis, gamma exposure, delta flow, trading signals">
+    <meta name="author" content="AlphaOne LLC">
+    <meta property="og:title" content="AI Options Intelligence Platform">
+    <meta property="og:description" content="Advanced AI-powered options flow analysis for superior market insights">
+    <meta property="og:type" content="website">
+    <title>AI Options Intelligence Platform | AlphaOne</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --bg-primary: #0a0e17;
+    --bg-secondary: #111827;
+    --bg-card: #1a2234;
+    --bg-card-hover: #232d42;
+    --accent-green: #00ff88;
+    --accent-green-dim: rgba(0, 255, 136, 0.15);
+    --accent-red: #ff3366;
+    --accent-red-dim: rgba(255, 51, 102, 0.15);
+    --accent-blue: #00d4ff;
+    --accent-blue-dim: rgba(0, 212, 255, 0.15);
+    --accent-yellow: #ffd600;
+    --accent-yellow-dim: rgba(255, 214, 0, 0.15);
+    --accent-purple: #a855f7;
+    --accent-purple-dim: rgba(168, 85, 247, 0.15);
+    --accent-orange: #ff6b35;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #2d3748;
+    --glow-green: 0 0 40px rgba(0, 255, 136, 0.4);
+    --glow-blue: 0 0 40px rgba(0, 212, 255, 0.4);
+    --glow-purple: 0 0 40px rgba(168, 85, 247, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+.bg-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
+}
+
+.bg-gradient {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+        radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+}
+
+.bg-orbs {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+}
+
+.orb {
+    position: absolute; border-radius: 50%; filter: blur(80px);
+    animation: float 15s ease-in-out infinite;
+}
+
+.orb-1 {
+    width: 400px; height: 400px; top: 10%; left: 10%;
+    background: rgba(0, 255, 136, 0.15);
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 350px; height: 350px; top: 60%; right: 10%;
+    background: rgba(0, 212, 255, 0.12);
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 300px; height: 300px; bottom: 20%; left: 30%;
+    background: rgba(168, 85, 247, 0.1);
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -30px) scale(1.05); }
+    50% { transform: translate(-20px, 20px) scale(0.95); }
+    75% { transform: translate(20px, 30px) scale(1.02); }
+}
+
+/* Container */
+.container {
+    position: relative; z-index: 1;
+    max-width: 1400px; margin: 0 auto; padding: 0 20px;
+}
+
+/* Navigation */
+.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 0;
+    background: rgba(10, 14, 23, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(45, 55, 72, 0.5);
+    transition: all 0.3s ease;
+}
+
+.nav.scrolled {
+    padding: 12px 0;
+    background: rgba(10, 14, 23, 0.95);
+}
+
+.nav-inner {
+    max-width: 1400px; margin: 0 auto; padding: 0 20px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+}
+
+.logo-text {
+    font-size: 1.3rem; font-weight: 800; color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.logo-text span { color: var(--accent-green); }
+
+.nav-links {
+    display: flex; gap: 8px; list-style: none;
+}
+
+.nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    padding: 10px 18px; border-radius: 8px;
+    font-size: 0.9rem; font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--text-primary);
+    background: var(--bg-card);
+}
+
+.nav-cta {
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-blue)) !important;
+    color: var(--bg-primary) !important;
+    font-weight: 600 !important;
+}
+
+.nav-cta:hover {
+    box-shadow: var(--glow-green);
+    transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 120px 0 80px;
+    text-align: center;
+}
+
+.hero-content { max-width: 900px; }
+
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent-purple-dim);
+    border: 1px solid var(--accent-purple);
+    color: var(--accent-purple);
+    padding: 10px 24px; border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 30px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-green);
+    animation: pulse 2s infinite;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -3px; margin-bottom: 24px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 .gradient-text {
+    background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 50%, var(--accent-purple) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem; color: var(--text-secondary);
+    line-height: 1.7; margin-bottom: 40px; font-weight: 300;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.hero-buttons {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 32px; border-radius: 12px;
+    font-size: 1rem; font-weight: 600;
+    text-decoration: none; transition: all 0.3s ease;
+    border: none; cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+    color: var(--bg-primary);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--glow-green);
+}
+
+.btn-secondary {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent-blue);
+    box-shadow: var(--glow-blue);
+    transform: translateY(-3px);
+}
+
+/* Stats Bar */
+.stats-bar {
+    display: flex; justify-content: center; gap: 60px;
+    padding: 40px 0; margin-top: 60px;
+    border-top: 1px solid var(--border-color);
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+    flex-wrap: wrap;
+}
+
+.stat-item { text-align: center; }
+
+.stat-value {
+    font-size: 2.5rem; font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+    font-size: 0.85rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-top: 8px;
+}
+
+/* Features Section */
+.section {
+    padding: 100px 0;
+}
+
+.section-header {
+    text-align: center; margin-bottom: 60px;
+}
+
+.section-badge {
+    display: inline-block;
+    background: var(--accent-blue-dim);
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 8px 20px; border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800; margin-bottom: 16px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary);
+    max-width: 600px; margin: 0 auto;
+}
+
+/* Dashboard Cards */
+.dashboards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.dashboard-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px; padding: 32px;
+    text-decoration: none; color: inherit;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-blue), var(--accent-purple));
+    opacity: 0; transition: opacity 0.3s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-green);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), var(--glow-green);
+}
+
+.dashboard-card:hover::before { opacity: 1; }
+
+.card-icon {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, var(--accent-green-dim), var(--accent-blue-dim));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin-bottom: 20px;
+}
+
+.card-badge {
+    position: absolute; top: 24px; right: 24px;
+    background: var(--accent-green-dim);
+    color: var(--accent-green);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase;
+}
+
+.card-badge.new { background: var(--accent-purple-dim); color: var(--accent-purple); }
+.card-badge.ai { background: var(--accent-blue-dim); color: var(--accent-blue); }
+
+.card-title {
+    font-size: 1.4rem; font-weight: 700; margin-bottom: 12px;
+}
+
+.card-desc {
+    font-size: 0.95rem; color: var(--text-secondary);
+    line-height: 1.6; margin-bottom: 20px;
+}
+
+.card-features {
+    display: flex; flex-wrap: wrap; gap: 8px;
+}
+
+.card-feature {
+    background: var(--bg-primary);
+    padding: 6px 12px; border-radius: 6px;
+    font-size: 0.75rem; color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* AI Features */
+.ai-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 60px;
+}
+
+.ai-feature {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 16px; padding: 28px;
+    transition: all 0.3s ease;
+}
+
+.ai-feature:hover {
+    border-color: var(--accent-purple);
+    transform: translateY(-4px);
+}
+
+.ai-feature-icon {
+    font-size: 2.5rem; margin-bottom: 16px;
+}
+
+.ai-feature-title {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 10px;
+}
+
+.ai-feature-desc {
+    font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;
+}
+
+/* Data Tables Preview */
+.tables-section {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.table-link {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px; padding: 20px;
+    text-decoration: none; color: inherit;
+    transition: all 0.3s ease;
+}
+
+.table-link:hover {
+    border-color: var(--accent-green);
+    transform: translateX(8px);
+}
+
+.table-icon {
+    width: 44px; height: 44px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+}
+
+.table-info { flex: 1; }
+
+.table-name {
+    font-size: 0.95rem; font-weight: 600; margin-bottom: 4px;
+}
+
+.table-meta {
+    font-size: 0.75rem; color: var(--text-muted);
+}
+
+.table-arrow {
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.table-link:hover .table-arrow {
+    color: var(--accent-green);
+    transform: translateX(4px);
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center; padding: 120px 0;
+}
+
+.cta-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 24px; padding: 60px 40px;
+    max-width: 800px; margin: 0 auto;
+    position: relative; overflow: hidden;
+}
+
+.cta-card::before {
+    content: ''; position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 60%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.cta-content { position: relative; z-index: 1; }
+
+.cta-title {
+    font-size: 2.5rem; font-weight: 800; margin-bottom: 16px;
+}
+
+.cta-desc {
+    font-size: 1.1rem; color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+/* Footer */
+.footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 60px 0 30px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 40px;
+}
+
+.footer-brand { }
+
+.footer-logo {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+}
+
+.footer-desc {
+    font-size: 0.9rem; color: var(--text-secondary);
+    line-height: 1.7; margin-bottom: 20px;
+}
+
+.footer-social {
+    display: flex; gap: 12px;
+}
+
+.social-link {
+    width: 40px; height: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+.footer-column h4 {
+    font-size: 0.9rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 20px; color: var(--text-primary);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li { margin-bottom: 12px; }
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover { color: var(--accent-green); }
+
+.footer-bottom {
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.legal-disclaimer {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px; padding: 20px;
+    margin-bottom: 24px;
+}
+
+.legal-disclaimer p {
+    font-size: 0.75rem; color: var(--text-muted);
+    line-height: 1.7; margin-bottom: 8px;
+}
+
+.legal-disclaimer p:last-child { margin-bottom: 0; }
+.legal-disclaimer strong { color: var(--text-secondary); }
+
+.footer-meta {
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px;
+}
+
+.copyright {
+    font-size: 0.8rem; color: var(--text-muted);
+}
+
+.cc-license {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; color: var(--text-muted);
+}
+
+.cc-license a { color: var(--text-secondary); text-decoration: none; }
+.cc-license img { height: 16px; opacity: 0.7; }
+
+/* Mobile */
+@media (max-width: 900px) {
+    .nav-links { display: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .stats-bar { gap: 30px; }
+}
+
+@media (max-width: 600px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero h1 { letter-spacing: -1px; }
+    .dashboards-grid { grid-template-columns: 1fr; }
+}
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-gradient"></div>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">🧠</div>
+                <div class="logo-text">Alpha<span>One</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#dashboards">Dashboards</a></li>
+                <li><a href="#features">AI Features</a></li>
+                <li><a href="#data">Data Tables</a></li>
+                <li><a href="ai_master_dashboard.html" class="nav-cta">Launch App →</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span>
+                    AI NEURAL NETWORK ACTIVE
+                </div>
+                <h1>
+                    <span class="gradient-text">AI-Powered</span><br>
+                    Options Intelligence
+                </h1>
+                <p class="hero-subtitle">
+                    Harness non-human pattern recognition to decode institutional flow, 
+                    predict gamma squeezes, and gain a superior edge in the options market.
+                </p>
+                <div class="hero-buttons">
+                    <a href="ai_master_dashboard.html" class="btn btn-primary">
+                        🚀 Launch Command Center
+                    </a>
+                    <a href="ai_top_25_plays.html" class="btn btn-secondary">
+                        🎯 View Top 25 Plays
+                    </a>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">AI Confidence</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$2.4B</div>
+                        <div class="stat-label">Flow Analyzed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">147</div>
+                        <div class="stat-label">Anomalies Found</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">25</div>
+                        <div class="stat-label">Top Plays</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboards Section -->
+    <section class="section" id="dashboards">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">📊 DASHBOARDS</div>
+                <h2 class="section-title">Intelligence Dashboards</h2>
+                <p class="section-subtitle">
+                    Three tiers of AI-powered analysis, from high-level command center to granular data tables
+                </p>
+            </div>
+            
+            <div class="dashboards-grid">
+                <a href="ai_master_dashboard.html" class="dashboard-card">
+                    <span class="card-badge">COMMAND</span>
+                    <div class="card-icon">🧠</div>
+                    <h3 class="card-title">AI Master Dashboard</h3>
+                    <p class="card-desc">
+                        Global orchestration command center with real-time AI status, neural insights, 
+                        hidden risk detection, and drill-down navigation to all analysis modules.
+                    </p>
+                    <div class="card-features">
+                        <span class="card-feature">Neural Insights</span>
+                        <span class="card-feature">Risk Alerts</span>
+                        <span class="card-feature">Flow Summary</span>
+                    </div>
+                </a>
+
+                <a href="ai_options_analysis.html" class="dashboard-card">
+                    <span class="card-badge ai">AI DEEP</span>
+                    <div class="card-icon">🔬</div>
+                    <h3 class="card-title">AI Deep Analysis</h3>
+                    <p class="card-desc">
+                        Comprehensive pattern recognition, flow decomposition, gamma mapping, 
+                        squeeze probability scanning, and predictive signal matrix.
+                    </p>
+                    <div class="card-features">
+                        <span class="card-feature">Pattern Match</span>
+                        <span class="card-feature">Flow Decomp</span>
+                        <span class="card-feature">Gamma Map</span>
+                    </div>
+                </a>
+
+                <a href="ai_top_25_plays.html" class="dashboard-card">
+                    <span class="card-badge new">HOT</span>
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Top 25 Trading Plays</h3>
+                    <p class="card-desc">
+                        Curated high-conviction trade setups with AI confidence scores, 
+                        entry/exit levels, risk management parameters, and detailed rationale.
+                    </p>
+                    <div class="card-features">
+                        <span class="card-feature">17 Bullish</span>
+                        <span class="card-feature">5 Bearish</span>
+                        <span class="card-feature">3 Neutral</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Features Section -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">🤖 AI CAPABILITIES</div>
+                <h2 class="section-title">Non-Human Intelligence Edge</h2>
+                <p class="section-subtitle">
+                    What AI sees that humans can't process in real-time
+                </p>
+            </div>
+            
+            <div class="ai-features">
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">🌊</div>
+                    <h4 class="ai-feature-title">Gamma Squeeze Detection</h4>
+                    <p class="ai-feature-desc">
+                        Real-time analysis of dealer gamma positioning, strike clustering, and 
+                        acceleration thresholds to identify squeeze setups before they trigger.
+                    </p>
+                </div>
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">🎭</div>
+                    <h4 class="ai-feature-title">Flow Decomposition</h4>
+                    <p class="ai-feature-desc">
+                        Separate institutional (42%), algorithmic (31%), retail (19%), and 
+                        market maker (8%) flows to understand true directional conviction.
+                    </p>
+                </div>
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">🔮</div>
+                    <h4 class="ai-feature-title">Pattern Recognition</h4>
+                    <p class="ai-feature-desc">
+                        78% accuracy matching current setups to historical patterns including 
+                        accumulation, rotation, and vol compression signatures.
+                    </p>
+                </div>
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">⚡</div>
+                    <h4 class="ai-feature-title">Hidden Risk Mapping</h4>
+                    <p class="ai-feature-desc">
+                        Identify gamma flip levels, OPEX pinning risks, liquidity vacuums, 
+                        and VIX term structure anomalies invisible to standard analysis.
+                    </p>
+                </div>
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">📡</div>
+                    <h4 class="ai-feature-title">Signal Synthesis</h4>
+                    <p class="ai-feature-desc">
+                        Multi-factor composite signals combining delta momentum, gamma exposure, 
+                        vega sentiment, and flow divergence into actionable scores.
+                    </p>
+                </div>
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">🎯</div>
+                    <h4 class="ai-feature-title">Trade Generation</h4>
+                    <p class="ai-feature-desc">
+                        AI-curated plays with confidence scores, optimal entry/exit levels, 
+                        position sizing guidance, and probability-weighted outcomes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Tables Section -->
+    <section class="section tables-section" id="data">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">📋 RAW DATA</div>
+                <h2 class="section-title">Options Data Tables</h2>
+                <p class="section-subtitle">
+                    Drill down into the underlying data powering the AI analysis
+                </p>
+            </div>
+            
+            <div class="tables-grid">
+                <a href="index_etf_options.html" class="table-link">
+                    <div class="table-icon">📈</div>
+                    <div class="table-info">
+                        <div class="table-name">Index ETF Options</div>
+                        <div class="table-meta">SPY, QQQ, IWM flows</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="single_stocks_options.html" class="table-link">
+                    <div class="table-icon">💹</div>
+                    <div class="table-info">
+                        <div class="table-name">Single Stock Options</div>
+                        <div class="table-meta">Individual equity flow</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="top_position_changes_delta.html" class="table-link">
+                    <div class="table-icon">Δ</div>
+                    <div class="table-info">
+                        <div class="table-name">Delta Changes</div>
+                        <div class="table-meta">Directional positioning</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="top_position_changes_gamma.html" class="table-link">
+                    <div class="table-icon">Γ</div>
+                    <div class="table-info">
+                        <div class="table-name">Gamma Changes</div>
+                        <div class="table-meta">Convexity exposure</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="top_position_changes_vega.html" class="table-link">
+                    <div class="table-icon">ν</div>
+                    <div class="table-info">
+                        <div class="table-name">Vega Changes</div>
+                        <div class="table-meta">Volatility sensitivity</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="largest_premium_trades.html" class="table-link">
+                    <div class="table-icon">💰</div>
+                    <div class="table-info">
+                        <div class="table-name">Largest Premium</div>
+                        <div class="table-meta">Big money trades</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="unusual_options_positions.html" class="table-link">
+                    <div class="table-icon">🔥</div>
+                    <div class="table-info">
+                        <div class="table-name">Unusual Activity</div>
+                        <div class="table-meta">Statistical outliers</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="sector_statistical_analysis.html" class="table-link">
+                    <div class="table-icon">🏛️</div>
+                    <div class="table-info">
+                        <div class="table-name">Sector Analysis</div>
+                        <div class="table-meta">Cross-sector heatmap</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="heavy_day_trading_algo_flow.html" class="table-link">
+                    <div class="table-icon">🤖</div>
+                    <div class="table-info">
+                        <div class="table-name">Algo Flow</div>
+                        <div class="table-meta">HFT activity detection</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="top_index_trades.html" class="table-link">
+                    <div class="table-icon">📊</div>
+                    <div class="table-info">
+                        <div class="table-name">Top Index Trades</div>
+                        <div class="table-meta">Major index plays</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="sector_delta_change.html" class="table-link">
+                    <div class="table-icon">📉</div>
+                    <div class="table-info">
+                        <div class="table-name">Sector Delta</div>
+                        <div class="table-meta">Sector rotation charts</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+                <a href="statistically_significant_positions.html" class="table-link">
+                    <div class="table-icon">📐</div>
+                    <div class="table-info">
+                        <div class="table-name">Statistical Positions</div>
+                        <div class="table-meta">Extreme percentiles</div>
+                    </div>
+                    <span class="table-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Trade Smarter?</h2>
+                    <p class="cta-desc">
+                        Access AI-powered insights that see what humans miss. 
+                        Pattern recognition, flow analysis, and high-conviction plays—all in one platform.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="ai_master_dashboard.html" class="btn btn-primary">
+                            🧠 Enter Command Center
+                        </a>
+                        <a href="ai_top_25_plays.html" class="btn btn-secondary">
+                            🎯 See Today's Plays
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">🧠</div>
+                        <div class="logo-text">Alpha<span style="color: var(--accent-green);">One</span></div>
+                    </div>
+                    <p class="footer-desc">
+                        AI-powered options flow analysis platform providing non-human intelligence 
+                        for superior market insights. Built with Claude AI.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://github.com/alphaonedev" class="social-link">GH</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Dashboards</h4>
+                    <ul class="footer-links">
+                        <li><a href="ai_master_dashboard.html">Command Center</a></li>
+                        <li><a href="ai_options_analysis.html">Deep Analysis</a></li>
+                        <li><a href="ai_top_25_plays.html">Top 25 Plays</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Data Tables</h4>
+                    <ul class="footer-links">
+                        <li><a href="index_etf_options.html">Index ETFs</a></li>
+                        <li><a href="single_stocks_options.html">Single Stocks</a></li>
+                        <li><a href="unusual_options_positions.html">Unusual Activity</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Analysis</h4>
+                    <ul class="footer-links">
+                        <li><a href="top_position_changes_delta.html">Delta Flow</a></li>
+                        <li><a href="top_position_changes_gamma.html">Gamma Exposure</a></li>
+                        <li><a href="sector_statistical_analysis.html">Sector Analysis</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="legal-disclaimer">
+                    <p>
+                        <strong>⚠️ IMPORTANT LEGAL DISCLAIMER:</strong> This platform and all information contained herein is provided for 
+                        <strong>informational and educational purposes only</strong> and does not constitute investment advice, financial advice, 
+                        trading advice, or any other sort of advice. <strong>Nothing on this platform should be construed as a recommendation 
+                        to buy, sell, or hold any security, cryptocurrency, derivative, or other financial instrument.</strong>
+                    </p>
+                    <p>
+                        The analysis presented is based on historical data, statistical models, and AI-generated interpretations which may contain 
+                        errors, inaccuracies, or omissions. <strong>Past performance is not indicative of future results.</strong> Always consult 
+                        with a qualified financial advisor before making investment decisions. Trading involves substantial risk of loss.
+                    </p>
+                </div>
+                
+                <div class="footer-meta">
+                    <div class="copyright">
+                        © 2026 AlphaOne LLC | Powered by Claude AI | Not affiliated with any broker or exchange
+                    </div>
+                    <div class="cc-license">
+                        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="ND">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
