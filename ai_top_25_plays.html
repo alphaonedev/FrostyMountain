@@ -1,236 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Top 25 Trading Plays</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-:root {
-    --bg-primary: #0a0e17;
-    --bg-card: #1a2234;
-    --bg-card-hover: #232d42;
-    --accent-green: #00ff88;
-    --accent-green-dim: rgba(0, 255, 136, 0.15);
-    --accent-red: #ff3366;
-    --accent-red-dim: rgba(255, 51, 102, 0.15);
-    --accent-blue: #00d4ff;
-    --accent-blue-dim: rgba(0, 212, 255, 0.15);
-    --accent-yellow: #ffd600;
-    --accent-yellow-dim: rgba(255, 214, 0, 0.15);
-    --accent-purple: #a855f7;
-    --accent-orange: #ff6b35;
-    --accent-orange-dim: rgba(255, 107, 53, 0.15);
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --border-color: #2d3748;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Outfit', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
-.bg-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px); background-size: 50px 50px; pointer-events: none; z-index: 0; }
-.container { position: relative; z-index: 1; max-width: 1600px; margin: 0 auto; padding: 30px 20px; }
-.nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; }
-.nav-back { color: var(--accent-green); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
-.header { text-align: center; margin-bottom: 40px; }
-.header-badge { display: inline-block; background: var(--accent-green-dim); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 8px 20px; border-radius: 50px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; margin-bottom: 20px; }
-.header h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; background: linear-gradient(135deg, #fff 0%, var(--accent-green) 50%, var(--accent-blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-.header-subtitle { font-size: 1rem; color: var(--text-secondary); margin-bottom: 8px; }
-.header-date { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--accent-green); }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; margin-bottom: 40px; }
-.stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center; }
-.stat-value { font-size: 2rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent-green); }
-.stat-label { color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; margin-top: 8px; letter-spacing: 1px; }
-.tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
-.tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 12px 24px; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
-.tab-btn:hover { background: var(--bg-card-hover); }
-.tab-btn.active { background: var(--accent-green-dim); border-color: var(--accent-green); color: var(--accent-green); }
-.trades-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
-.trade-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; transition: all 0.3s ease; }
-.trade-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
-.trade-card.bullish { border-left: 4px solid var(--accent-green); }
-.trade-card.bearish { border-left: 4px solid var(--accent-red); }
-.trade-card.neutral { border-left: 4px solid var(--accent-yellow); }
-.trade-card.swing { border-left: 4px solid var(--accent-orange); }
-.trade-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.trade-ticker { display: flex; align-items: center; gap: 10px; }
-.ticker-symbol { font-size: 1.6rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
-.ticker-price { font-family: 'JetBrains Mono', monospace; color: var(--text-secondary); font-size: 0.9rem; }
-.trade-badge { padding: 5px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-.badge-high { background: var(--accent-green-dim); color: var(--accent-green); }
-.badge-med { background: var(--accent-blue-dim); color: var(--accent-blue); }
-.badge-swing { background: var(--accent-orange-dim); color: var(--accent-orange); }
-.trade-strategy { background: var(--bg-primary); border-radius: 8px; padding: 12px; margin-bottom: 16px; }
-.strategy-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
-.strategy-name { font-size: 0.95rem; font-weight: 600; color: var(--accent-blue); }
-.price-levels { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.price-level { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; padding: 6px 10px; border-radius: 6px; }
-.price-level.entry { background: var(--accent-blue-dim); color: var(--accent-blue); }
-.price-level.stop { background: var(--accent-red-dim); color: var(--accent-red); }
-.price-level.target { background: var(--accent-green-dim); color: var(--accent-green); }
-.trade-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-.detail-item { text-align: center; }
-.detail-label { font-size: 0.7rem; color: var(--text-muted); }
-.detail-value { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 600; }
-.detail-value.green { color: var(--accent-green); }
-.detail-value.blue { color: var(--accent-blue); }
-.detail-value.orange { color: var(--accent-orange); }
-.trade-rationale { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; padding-top: 12px; border-top: 1px solid var(--border-color); }
-.ai-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 0.65rem; color: var(--accent-purple); margin-bottom: 8px; }
-.risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.risk-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; }
-.risk-category { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.risk-icon { font-size: 2rem; }
-.risk-title { font-size: 1.1rem; font-weight: 700; }
-.risk-rules { list-style: none; }
-.risk-rules li { font-size: 0.85rem; color: var(--text-secondary); padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-.risk-rules li:last-child { border-bottom: none; }
-.footer { margin-top: 40px; padding: 32px; background: #0f172a; border-radius: 16px; border: 1px solid var(--border-color); }
-.footer-title { font-size: 1.1rem; font-weight: 700; color: #e2e8f0; text-align: center; margin-bottom: 8px; }
-.legal-disclaimer { background: #1e293b; padding: 20px; border-radius: 6px; border-left: 4px solid #f59e0b; margin-top: 16px; }
-.legal-disclaimer p { font-size: 0.75rem; color: #94a3b8; line-height: 1.7; margin-bottom: 12px; }
-.legal-disclaimer strong { color: #e2e8f0; }
-.hidden { display: none !important; }
-@media (max-width: 768px) { .trades-grid { grid-template-columns: 1fr; } }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Top 18 Trading Plays | AlphaOne</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg-primary:#0a0e17; --bg-card:#1a2234; --accent-green:#00ff88; --accent-green-dim:rgba(0,255,136,0.15); --accent-red:#ff3366; --accent-red-dim:rgba(255,51,102,0.15); --accent-blue:#00d4ff; --accent-blue-dim:rgba(0,212,255,0.15); --accent-yellow:#ffd600; --accent-yellow-dim:rgba(255,214,0,0.15); --accent-purple:#a855f7; --accent-orange:#ff6b35; --accent-orange-dim:rgba(255,107,53,0.15); --text-primary:#fff; --text-secondary:#94a3b8; --text-muted:#64748b; --border-color:#2d3748; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+.bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,255,136,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.02) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.container{position:relative;z-index:1;max-width:1600px;margin:0 auto;padding:30px 20px}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding:16px 24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px}
+.nav-back{color:var(--accent-green);text-decoration:none;font-weight:600}
+.header{text-align:center;margin-bottom:40px}
+.header-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-green-dim);border:1px solid var(--accent-green);color:var(--accent-green);padding:8px 20px;border-radius:50px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:2px;margin-bottom:20px}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--accent-green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.header h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;margin-bottom:10px}
+.gradient-text{background:linear-gradient(135deg,var(--accent-green),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:30px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:18px;text-align:center}
+.stat-value{font-size:2rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.stat-label{color:var(--text-muted);font-size:0.7rem;text-transform:uppercase;margin-top:6px;letter-spacing:1px}
+.tabs{display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap;justify-content:center}
+.tab-btn{background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);padding:12px 22px;border-radius:10px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.3s}
+.tab-btn:hover{background:rgba(255,255,255,0.05)}
+.tab-btn.active{background:var(--accent-green-dim);border-color:var(--accent-green);color:var(--accent-green)}
+.plays-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px}
+.play-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:22px;transition:all 0.3s}
+.play-card:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(0,0,0,0.3)}
+.play-card.bullish{border-left:4px solid var(--accent-green)}
+.play-card.bearish{border-left:4px solid var(--accent-red)}
+.play-card.neutral{border-left:4px solid var(--accent-yellow)}
+.play-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.play-symbol{font-size:1.5rem;font-weight:900;font-family:'JetBrains Mono',monospace}
+.play-badge{padding:5px 12px;border-radius:6px;font-size:0.7rem;font-weight:700}
+.badge-high{background:var(--accent-green-dim);color:var(--accent-green)}
+.badge-med{background:var(--accent-blue-dim);color:var(--accent-blue)}
+.badge-low{background:var(--accent-yellow-dim);color:var(--accent-yellow)}
+.play-strategy{background:var(--bg-primary);border-radius:8px;padding:12px;margin-bottom:14px;font-size:0.9rem;font-weight:600;color:var(--accent-blue)}
+.play-levels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.level{font-family:'JetBrains Mono',monospace;font-size:0.8rem;padding:6px 12px;border-radius:6px}
+.level-entry{background:var(--accent-blue-dim);color:var(--accent-blue)}
+.level-stop{background:var(--accent-red-dim);color:var(--accent-red)}
+.level-target{background:var(--accent-green-dim);color:var(--accent-green)}
+.play-rationale{font-size:0.85rem;color:var(--text-secondary);line-height:1.6;padding-top:14px;border-top:1px solid var(--border-color)}
+.play-meta{display:flex;justify-content:space-between;margin-top:12px;font-size:0.75rem;color:var(--text-muted)}
+.hidden{display:none!important}
+.risk-section{margin-top:40px}
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.risk-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:20px}
+.risk-title{font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.risk-list{list-style:none}
+.risk-list li{font-size:0.85rem;color:var(--text-secondary);padding:8px 0;border-bottom:1px solid var(--border-color)}
+.risk-list li:last-child{border-bottom:none}
+.footer{margin-top:40px;padding:24px;background:var(--bg-card);border-radius:12px;border-left:4px solid #f59e0b}
+.footer p{font-size:0.75rem;color:var(--text-muted);text-align:center;margin-bottom:8px}
+</style>
 </head>
 <body>
 <div class="bg-grid"></div>
 <div class="container">
-    <nav class="nav-bar">
-        <a href="ai_master_dashboard.html" class="nav-back">← Back to Command Center</a>
-        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-muted);">TOP-25-v2.4.0</span>
-    </nav>
-    <header class="header">
-        <div class="header-badge">🎯 AI-POWERED ANALYSIS</div>
-        <h1>TOP 25 TRADING PLAYS</h1>
-        <p class="header-subtitle">Volume Anomaly + Price Action Strategy</p>
-        <p class="header-date">● Generated: January 02, 2026</p>
-    </header>
-    <div class="stats-grid">
-        <div class="stat-card"><div class="stat-value">25</div><div class="stat-label">Total Plays</div></div>
-        <div class="stat-card"><div class="stat-value" style="color: var(--accent-blue);">15</div><div class="stat-label">Options</div></div>
-        <div class="stat-card"><div class="stat-value" style="color: var(--accent-orange);">10</div><div class="stat-label">Swing Trades</div></div>
-        <div class="stat-card"><div class="stat-value" style="color: var(--accent-purple);">8</div><div class="stat-label">High Conviction</div></div>
-        <div class="stat-card"><div class="stat-value" style="color: var(--accent-green);">18</div><div class="stat-label">Bullish</div></div>
-        <div class="stat-card"><div class="stat-value" style="color: var(--accent-yellow);">3:1</div><div class="stat-label">Avg R:R</div></div>
-    </div>
-    <div class="tabs">
-        <button class="tab-btn active" data-filter="all">🎯 All Plays</button>
-        <button class="tab-btn" data-filter="bullish">📈 Bullish</button>
-        <button class="tab-btn" data-filter="bearish">📉 Bearish</button>
-        <button class="tab-btn" data-filter="neutral">⚖️ Neutral</button>
-        <button class="tab-btn" data-filter="swing">🔄 Swing</button>
-        <button class="tab-btn" data-filter="risk">🛡️ Risk Rules</button>
-    </div>
-    <div id="trades-container" class="trades-grid">
-        <!-- BULLISH OPTIONS -->
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 94%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">NVDA</span><span class="ticker-price">$188.85</span></div><span class="trade-badge badge-high">HIGH</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Jan 17 $190C | 1-2 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $188</div><div class="price-level stop">🛑 Stop: $180</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $198</div><div class="price-level target">🎯 PT2: $205</div><div class="price-level target">🚀 YOLO: $215</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$185-$195</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">3.2:1</div></div></div><div class="trade-rationale">🧠 AI: Gamma squeeze setup +$42.8M delta. Dealer short gamma at $190. 78% pattern match.</div></div>
+<nav class="nav-bar">
+<a href="ai_master_dashboard.html" class="nav-back">← Back to Dashboard</a>
+<span style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--text-muted)">TOP18-v2.4.0</span>
+</nav>
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 91%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">AMD</span><span class="ticker-price">$223.47</span></div><span class="trade-badge badge-high">HIGH</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Jan 17 $225C | 1-2 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $223</div><div class="price-level stop">🛑 Stop: $212</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $235</div><div class="price-level target">🎯 PT2: $245</div><div class="price-level target">🚀 YOLO: $260</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$220-$240</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.8:1</div></div></div><div class="trade-rationale">🧠 AI: +$31.5M delta accumulation. Semiconductor rotation. AI infrastructure catalyst.</div></div>
+<header class="header">
+<div class="header-badge"><span class="pulse"></span>AI-GENERATED • REAL OPTIONS DATA</div>
+<h1><span class="gradient-text">Top 18 Trading Plays</span></h1>
+<p style="color:var(--text-secondary)">Derived from unusual activity & institutional delta flow • Jan 2, 2026</p>
+</header>
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 87%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">IWM</span><span class="ticker-price">$248.78</span></div><span class="trade-badge badge-high">HIGH</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Feb 21 $255C | 3-4 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $248</div><div class="price-level stop">🛑 Stop: $240</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $258</div><div class="price-level target">🎯 PT2: $265</div><div class="price-level target">🚀 YOLO: $275</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$245-$260</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.5:1</div></div></div><div class="trade-rationale">🧠 AI: Algo-institutional divergence. Smart money accumulating while algos provide liquidity.</div></div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-value" style="color:var(--accent-blue)">18</div><div class="stat-label">Total Plays</div></div>
+<div class="stat-card"><div class="stat-value" style="color:var(--accent-purple)">12</div><div class="stat-label">Options</div></div>
+<div class="stat-card"><div class="stat-value" style="color:var(--accent-orange)">6</div><div class="stat-label">Swing</div></div>
+<div class="stat-card"><div class="stat-value" style="color:var(--accent-green)">8</div><div class="stat-label">Bullish</div></div>
+<div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">6</div><div class="stat-label">Bearish</div></div>
+<div class="stat-card"><div class="stat-value" style="color:var(--accent-yellow)">85%</div><div class="stat-label">Avg Conf</div></div>
+</div>
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 85%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">SMCI</span><span class="ticker-price">$32.45</span></div><span class="trade-badge badge-high">HIGH</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Jan 17 $35C | SPECULATIVE</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $32</div><div class="price-level stop">🛑 Stop: $28</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $38</div><div class="price-level target">🎯 PT2: $45</div><div class="price-level target">🚀 YOLO: $55</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$30-$42</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">3.5:1</div></div></div><div class="trade-rationale">🧠 AI: Unusual activity $8.8M premium 42K BTO. AI server demand play.</div></div>
+<div class="tabs">
+<button class="tab-btn active" data-filter="all">🎯 All (18)</button>
+<button class="tab-btn" data-filter="bullish">📈 Bullish (8)</button>
+<button class="tab-btn" data-filter="bearish">📉 Bearish (6)</button>
+<button class="tab-btn" data-filter="neutral">⚖️ Neutral (4)</button>
+</div>
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 83%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">PLTR</span><span class="ticker-price">$76.50</span></div><span class="trade-badge badge-high">HIGH</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Jan 17 $80C | 1-2 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $76</div><div class="price-level stop">🛑 Stop: $70</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $85</div><div class="price-level target">🎯 PT2: $92</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$72-$88</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.7:1</div></div></div><div class="trade-rationale">🧠 AI: $6.9M unusual premium. Government AI contract catalyst potential.</div></div>
+<div class="plays-grid">
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 81%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">COIN</span><span class="ticker-price">$275.30</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Jan 17 $280C</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $275</div><div class="price-level stop">🛑 Stop: $255</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $295</div><div class="price-level target">🎯 PT2: $310</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$265-$300</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.5:1</div></div></div><div class="trade-rationale">🧠 AI: Crypto rotation +$4.6M unusual premium. BTC momentum play.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">QQQ</span>
+<span class="play-badge badge-high">94%</span>
+</div>
+<div class="play-strategy">LONG CALLS | 2026-01-05 $612C</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $599.76</span>
+<span class="level level-stop">🛑 $563.04</span>
+<span class="level level-target">🎯 $642.60</span>
+<span class="level level-target">🎯 $685.44</span>
+</div>
+<div class="play-rationale">🧠 Unusual call activity: 31,783 vol vs 48 OI (662.1x ratio). Delta: 0.59, IV: 10%</div>
+<div class="play-meta"><span>R:R 2.8:1</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 76%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">GOOGL</span><span class="ticker-price">$315.15</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG CALLS | Jan 17 $320C</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $315</div><div class="price-level stop">🛑 Stop: $305</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $325</div><div class="price-level target">🎯 PT2: $335</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$310-$330</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.0:1</div></div></div><div class="trade-rationale">🧠 AI: +$19.2M delta with call spread opening. Comm services rotation.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">QQQ</span>
+<span class="play-badge badge-high">94%</span>
+</div>
+<div class="play-strategy">LONG CALLS | 2026-02-27 $636C</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $623.28</span>
+<span class="level level-stop">🛑 $585.12</span>
+<span class="level level-target">🎯 $667.80</span>
+<span class="level level-target">🎯 $712.32</span>
+</div>
+<div class="play-rationale">🧠 Unusual call activity: 2,025 vol vs 6 OI (337.5x ratio). Delta: 0.32, IV: 16%</div>
+<div class="play-meta"><span>R:R 2.8:1</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card bullish" data-type="bullish"><div class="ai-tag">🧠 AI CONFIDENCE: 74%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">META</span><span class="ticker-price">$650.41</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">BULL PUT SPREAD | Jan 17 640/630P</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $650</div><div class="price-level target">💰 Credit: $2.80</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Break-Even</div><div class="detail-value blue">$637.20</div></div><div class="detail-item"><div class="detail-label">Win Prob</div><div class="detail-value green">68%</div></div></div><div class="trade-rationale">🧠 AI: Put roll activity indicates support at $640. Defined risk bullish.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">TSLA</span>
+<span class="play-badge badge-high">94%</span>
+</div>
+<div class="play-strategy">LONG CALLS | 2026-01-09 $422C</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $414.05</span>
+<span class="level level-stop">🛑 $388.70</span>
+<span class="level level-target">🎯 $443.62</span>
+<span class="level level-target">🎯 $473.20</span>
+</div>
+<div class="play-rationale">🧠 Unusual call activity: 2,835 vol vs 9 OI (315.0x ratio). Delta: 0.76, IV: 40%</div>
+<div class="play-meta"><span>R:R 2.8:1</span><span>OPTIONS</span></div>
+</div>
 
-        <!-- BEARISH OPTIONS -->
-        <div class="trade-card bearish" data-type="bearish"><div class="ai-tag">🧠 AI CONFIDENCE: 82%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">SPY</span><span class="ticker-price">$683.17</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">PUT SPREAD | Jan 17 680/670P | HEDGE</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $683</div><div class="price-level stop">🛑 Stop: $695</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $672</div><div class="price-level target">🎯 PT2: $665</div><div class="price-level target">🚀 YOLO: $650</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$670-$690</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.0:1</div></div></div><div class="trade-rationale">🧠 AI: Gamma flip at $680 + put wall. 71% correlated with 2-4% corrections.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">SPY</span>
+<span class="play-badge badge-high">94%</span>
+</div>
+<div class="play-strategy">LONG CALLS | 2026-01-05 $681C</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $667.38</span>
+<span class="level level-stop">🛑 $626.52</span>
+<span class="level level-target">🎯 $715.05</span>
+<span class="level level-target">🎯 $762.72</span>
+</div>
+<div class="play-rationale">🧠 Unusual call activity: 41,531 vol vs 155 OI (267.9x ratio). Delta: 0.70, IV: 7%</div>
+<div class="play-meta"><span>R:R 2.8:1</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card bearish" data-type="bearish"><div class="ai-tag">🧠 AI CONFIDENCE: 79%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">QQQ</span><span class="ticker-price">$613.12</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG PUTS | Mar 20 $600P | HEDGE</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $613</div><div class="price-level stop">🛑 Stop: $635</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $595</div><div class="price-level target">🎯 PT2: $580</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$590-$620</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">1.8:1</div></div></div><div class="trade-rationale">🧠 AI: Long strangle opening + $23.8M put BTO. Tech concentration insurance.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">SPY</span>
+<span class="play-badge badge-high">91%</span>
+</div>
+<div class="play-strategy">LONG STOCK | Swing 2-4 Weeks</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $683.00</span>
+<span class="level level-stop">🛑 $642.02</span>
+<span class="level level-target">🎯 $723.98</span>
+<span class="level level-target">🎯 $764.96</span>
+</div>
+<div class="play-rationale">🧠 Strong institutional delta inflow: +$25.9M. Call/Put ratio favors bulls. Volume: 9,313,248</div>
+<div class="play-meta"><span>R:R 2.5:1</span><span>SWING</span></div>
+</div>
 
-        <div class="trade-card bearish" data-type="bearish"><div class="ai-tag">🧠 AI CONFIDENCE: 75%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">TSLA</span><span class="ticker-price">$438.07</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">BEAR CALL SPREAD | Jan 17 450/460C</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $438</div><div class="price-level target">💰 Credit: $3.50</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Max Profit</div><div class="detail-value green">$350</div></div><div class="detail-item"><div class="detail-label">Max Loss</div><div class="detail-value" style="color:var(--accent-red)">$650</div></div></div><div class="trade-rationale">🧠 AI: -$38.2M delta outflow with call closing. Profit-taking rotation.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">IWM</span>
+<span class="play-badge badge-high">88%</span>
+</div>
+<div class="play-strategy">LONG STOCK | Swing 2-4 Weeks</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $249.00</span>
+<span class="level level-stop">🛑 $234.06</span>
+<span class="level level-target">🎯 $263.94</span>
+<span class="level level-target">🎯 $278.88</span>
+</div>
+<div class="play-rationale">🧠 Strong institutional delta inflow: +$16.3M. Call/Put ratio favors bulls. Volume: 1,246,093</div>
+<div class="play-meta"><span>R:R 2.5:1</span><span>SWING</span></div>
+</div>
 
-        <div class="trade-card bearish" data-type="bearish"><div class="ai-tag">🧠 AI CONFIDENCE: 73%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">ARKK</span><span class="ticker-price">$58.42</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG PUTS | Feb 21 $55P</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $58</div><div class="price-level stop">🛑 Stop: $64</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $52</div><div class="price-level target">🎯 PT2: $48</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Hold Zone</div><div class="detail-value blue">$50-$60</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.0:1</div></div></div><div class="trade-rationale">🧠 AI: Growth to value rotation. High beta underperformance expected.</div></div>
+<div class="play-card bearish" data-type="bearish">
+<div class="play-header">
+<span class="play-symbol">IWM</span>
+<span class="play-badge badge-high">88%</span>
+</div>
+<div class="play-strategy">LONG PUTS | 2026-02-20 $236P</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $240.72</span>
+<span class="level level-stop">🛑 $259.60</span>
+<span class="level level-target">🎯 $224.20</span>
+<span class="level level-target">🎯 $207.68</span>
+</div>
+<div class="play-rationale">🧠 Unusual put activity: 41,016 vol (148.6x OI). Hedging or directional bet. Delta: -0.22</div>
+<div class="play-meta"><span>R:R 2.2:1</span><span>OPTIONS</span></div>
+</div>
 
-        <!-- NEUTRAL OPTIONS -->
-        <div class="trade-card neutral" data-type="neutral"><div class="ai-tag">🧠 AI CONFIDENCE: 78%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">AAPL</span><span class="ticker-price">$271.01</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">IRON CONDOR | Jan 17 | Sell Premium</div></div><div class="price-levels"><div class="price-level entry">📍 Range: $265-$280</div><div class="price-level target">💰 Credit: $3.20</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Break-Even</div><div class="detail-value blue">$262/$283</div></div><div class="detail-item"><div class="detail-label">Win Prob</div><div class="detail-value green">73%</div></div></div><div class="trade-rationale">🧠 AI: Short strangle + vol crush. IV at 72nd percentile. Sell premium strategy.</div></div>
+<div class="play-card bearish" data-type="bearish">
+<div class="play-header">
+<span class="play-symbol">QQQ</span>
+<span class="play-badge badge-high">88%</span>
+</div>
+<div class="play-strategy">LONG PUTS | 2026-01-08 $619P</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $631.38</span>
+<span class="level level-stop">🛑 $680.90</span>
+<span class="level level-target">🎯 $588.05</span>
+<span class="level level-target">🎯 $544.72</span>
+</div>
+<div class="play-rationale">🧠 Unusual put activity: 2,480 vol (77.5x OI). Hedging or directional bet. Delta: -0.69</div>
+<div class="play-meta"><span>R:R 2.2:1</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card neutral" data-type="neutral"><div class="ai-tag">🧠 AI CONFIDENCE: 72%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">MSFT</span><span class="ticker-price">$472.94</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">IRON CONDOR | Jan 17</div></div><div class="price-levels"><div class="price-level entry">📍 Range: $460-$490</div><div class="price-level target">💰 Credit: $4.20</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Break-Even</div><div class="detail-value blue">$456/$494</div></div><div class="detail-item"><div class="detail-label">Win Prob</div><div class="detail-value green">68%</div></div></div><div class="trade-rationale">🧠 AI: -$16.7M delta with call closing. Range-bound into earnings.</div></div>
+<div class="play-card bearish" data-type="bearish">
+<div class="play-header">
+<span class="play-symbol">AMD</span>
+<span class="play-badge badge-high">88%</span>
+</div>
+<div class="play-strategy">LONG PUTS | 2026-01-09 $228P</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $232.05</span>
+<span class="level level-stop">🛑 $250.25</span>
+<span class="level level-target">🎯 $216.12</span>
+<span class="level level-target">🎯 $200.20</span>
+</div>
+<div class="play-rationale">🧠 Unusual put activity: 3,269 vol (53.6x OI). Hedging or directional bet. Delta: -0.59</div>
+<div class="play-meta"><span>R:R 2.2:1</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card neutral" data-type="neutral"><div class="ai-tag">🧠 AI CONFIDENCE: 76%</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">AMZN</span><span class="ticker-price">$226.50</span></div><span class="trade-badge badge-med">MED</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">IRON BUTTERFLY | Jan 17 $225</div></div><div class="price-levels"><div class="price-level entry">📍 Pin: $225</div><div class="price-level target">💰 Credit: $8.50</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Break-Even</div><div class="detail-value blue">$217/$233</div></div><div class="detail-item"><div class="detail-label">Win Prob</div><div class="detail-value green">45%</div></div></div><div class="trade-rationale">🧠 AI: Max pain pinning at $225. High reward if price settles near strike.</div></div>
-        <!-- SWING TRADES -->
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 2-4 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">MSTR</span><span class="ticker-price">$385.20</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG STOCK | Bitcoin Proxy | 2-4 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $385</div><div class="price-level stop">🛑 Stop: $340</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $425</div><div class="price-level target">🎯 PT2: $475</div><div class="price-level target">🚀 PT3: $550</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">2-4 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.9:1</div></div></div><div class="trade-rationale">🧠 AI: BTC breakout. MSTR = leveraged Bitcoin exposure. Institutional accumulation.</div></div>
+<div class="play-card bearish" data-type="bearish">
+<div class="play-header">
+<span class="play-symbol">SPY</span>
+<span class="play-badge badge-high">88%</span>
+</div>
+<div class="play-strategy">LONG PUTS | 2026-01-02 $683P</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $696.66</span>
+<span class="level level-stop">🛑 $751.30</span>
+<span class="level level-target">🎯 $648.85</span>
+<span class="level level-target">🎯 $601.04</span>
+</div>
+<div class="play-rationale">🧠 Unusual put activity: 439,282 vol (42.1x OI). Hedging or directional bet. Delta: -0.33</div>
+<div class="play-meta"><span>R:R 2.2:1</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 3-6 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">XLF</span><span class="ticker-price">$51.82</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Financials | 3-6 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $51.80</div><div class="price-level stop">🛑 Stop: $48.50</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $54</div><div class="price-level target">🎯 PT2: $56</div><div class="price-level target">🚀 PT3: $58</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">3-6 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.3:1</div></div></div><div class="trade-rationale">🧠 AI: Yield curve steepening. Banks benefit from wider NIM. Sector rotation.</div></div>
+<div class="play-card bearish" data-type="bearish">
+<div class="play-header">
+<span class="play-symbol">TSLA</span>
+<span class="play-badge badge-high">85%</span>
+</div>
+<div class="play-strategy">SHORT / PUT SPREAD | Hedge</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $435.00</span>
+<span class="level level-stop">🛑 $465.45</span>
+<span class="level level-target">🎯 $408.90</span>
+<span class="level level-target">🎯 $382.80</span>
+</div>
+<div class="play-rationale">🧠 Delta outflow: $-48.1M. P/C ratio: 0.80. Distribution pattern detected.</div>
+<div class="play-meta"><span>R:R 2.0:1</span><span>SWING</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 2-4 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">GLD</span><span class="ticker-price">$242.15</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Gold | 2-4 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $242</div><div class="price-level stop">🛑 Stop: $232</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $252</div><div class="price-level target">🎯 PT2: $260</div><div class="price-level target">🚀 PT3: $270</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">2-4 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.8:1</div></div></div><div class="trade-rationale">🧠 AI: Central bank buying + inflation hedge. Breakout above $240 confirmed.</div></div>
+<div class="play-card bearish" data-type="bearish">
+<div class="play-header">
+<span class="play-symbol">QQQ</span>
+<span class="play-badge badge-high">85%</span>
+</div>
+<div class="play-strategy">SHORT / PUT SPREAD | Hedge</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $613.00</span>
+<span class="level level-stop">🛑 $655.91</span>
+<span class="level level-target">🎯 $576.22</span>
+<span class="level level-target">🎯 $539.44</span>
+</div>
+<div class="play-rationale">🧠 Delta outflow: $-40.5M. P/C ratio: 0.76. Distribution pattern detected.</div>
+<div class="play-meta"><span>R:R 2.0:1</span><span>SWING</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 4-8 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">SLV</span><span class="ticker-price">$28.45</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Silver | 4-8 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $28.50</div><div class="price-level stop">🛑 Stop: $26</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $31</div><div class="price-level target">🎯 PT2: $34</div><div class="price-level target">🚀 PT3: $38</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">4-8 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">3.8:1</div></div></div><div class="trade-rationale">🧠 AI: Gold/Silver ratio extreme. Silver catch-up trade. Industrial + monetary demand.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">AMD</span>
+<span class="play-badge badge-med">83%</span>
+</div>
+<div class="play-strategy">LONG STOCK | Swing 2-4 Weeks</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $222.50</span>
+<span class="level level-stop">🛑 $209.15</span>
+<span class="level level-target">🎯 $235.85</span>
+<span class="level level-target">🎯 $249.20</span>
+</div>
+<div class="play-rationale">🧠 Strong institutional delta inflow: +$10.6M. Call/Put ratio favors bulls. Volume: 716,735</div>
+<div class="play-meta"><span>R:R 2.5:1</span><span>SWING</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 2-3 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">XLE</span><span class="ticker-price">$89.75</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Energy | 2-3 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $89.75</div><div class="price-level stop">🛑 Stop: $85</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $94</div><div class="price-level target">🎯 PT2: $98</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">2-3 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.2:1</div></div></div><div class="trade-rationale">🧠 AI: Oil bounce off support. Winter demand + geopolitical premium. Dividend support.</div></div>
+<div class="play-card bullish" data-type="bullish">
+<div class="play-header">
+<span class="play-symbol">GOOGL</span>
+<span class="play-badge badge-med">79%</span>
+</div>
+<div class="play-strategy">LONG STOCK | Swing 2-4 Weeks</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $315.00</span>
+<span class="level level-stop">🛑 $296.10</span>
+<span class="level level-target">🎯 $333.90</span>
+<span class="level level-target">🎯 $352.80</span>
+</div>
+<div class="play-rationale">🧠 Strong institutional delta inflow: +$6.9M. Call/Put ratio favors bulls. Volume: 441,685</div>
+<div class="play-meta"><span>R:R 2.5:1</span><span>SWING</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 3-5 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">XBI</span><span class="ticker-price">$92.30</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Biotech | 3-5 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $92</div><div class="price-level stop">🛑 Stop: $86</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $98</div><div class="price-level target">🎯 PT2: $105</div><div class="price-level target">🚀 PT3: $115</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">3-5 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">3.2:1</div></div></div><div class="trade-rationale">🧠 AI: M&A cycle heating. Small cap biotech valuations attractive. JPM Healthcare catalyst.</div></div>
+<div class="play-card neutral" data-type="neutral">
+<div class="play-header">
+<span class="play-symbol">NVDA</span>
+<span class="play-badge badge-low">74%</span>
+</div>
+<div class="play-strategy">IRON CONDOR | Premium Collection</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $187.50</span>
+<span class="level level-stop">🛑 $0.00</span>
+<span class="level level-target">🎯 $178.12</span>
+<span class="level level-target">🎯 $196.88</span>
+</div>
+<div class="play-rationale">🧠 Balanced flow - P/C: 0.56. High liquidity: 2,837,752 vol. Range-bound premium selling opportunity.</div>
+<div class="play-meta"><span>R:R Max Credit</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 2-4 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">SOXX</span><span class="ticker-price">$248.60</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Semiconductors | 2-4 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $248</div><div class="price-level stop">🛑 Stop: $235</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $260</div><div class="price-level target">🎯 PT2: $275</div><div class="price-level target">🚀 PT3: $290</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">2-4 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">3.2:1</div></div></div><div class="trade-rationale">🧠 AI: AI capex cycle. Semiconductor shortage narratives returning. NVDA/AMD leadership.</div></div>
+<div class="play-card neutral" data-type="neutral">
+<div class="play-header">
+<span class="play-symbol">AAPL</span>
+<span class="play-badge badge-low">74%</span>
+</div>
+<div class="play-strategy">IRON CONDOR | Premium Collection</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $270.00</span>
+<span class="level level-stop">🛑 $0.00</span>
+<span class="level level-target">🎯 $256.50</span>
+<span class="level level-target">🎯 $283.50</span>
+</div>
+<div class="play-rationale">🧠 Balanced flow - P/C: 0.58. High liquidity: 851,517 vol. Range-bound premium selling opportunity.</div>
+<div class="play-meta"><span>R:R Max Credit</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 1-2 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">TQQQ</span><span class="ticker-price">$88.45</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG 3X ETF | QQQ Leveraged | 1-2 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $88</div><div class="price-level stop">🛑 Stop: $80</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $95</div><div class="price-level target">🎯 PT2: $102</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">1-2 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.1:1</div></div></div><div class="trade-rationale">🧠 AI: 3X QQQ for momentum. Short-term tech rally. Ride momentum with discipline.</div></div>
+<div class="play-card neutral" data-type="neutral">
+<div class="play-header">
+<span class="play-symbol">AMD</span>
+<span class="play-badge badge-low">74%</span>
+</div>
+<div class="play-strategy">IRON CONDOR | Premium Collection</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $222.50</span>
+<span class="level level-stop">🛑 $0.00</span>
+<span class="level level-target">🎯 $211.38</span>
+<span class="level level-target">🎯 $233.62</span>
+</div>
+<div class="play-rationale">🧠 Balanced flow - P/C: 0.63. High liquidity: 716,735 vol. Range-bound premium selling opportunity.</div>
+<div class="play-meta"><span>R:R Max Credit</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bearish"><div class="ai-tag">🔄 SWING | 2-4 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">TLT</span><span class="ticker-price">$87.20</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">SHORT ETF | Long Bonds | 2-4 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $87</div><div class="price-level stop">🛑 Stop: $92</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $83</div><div class="price-level target">🎯 PT2: $80</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">2-4 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">1.8:1</div></div></div><div class="trade-rationale">🧠 AI: Rates higher for longer. Fed hawkish. Treasury supply overwhelming demand.</div></div>
+<div class="play-card neutral" data-type="neutral">
+<div class="play-header">
+<span class="play-symbol">MSFT</span>
+<span class="play-badge badge-low">74%</span>
+</div>
+<div class="play-strategy">IRON CONDOR | Premium Collection</div>
+<div class="play-levels">
+<span class="level level-entry">📍 $472.50</span>
+<span class="level level-stop">🛑 $0.00</span>
+<span class="level level-target">🎯 $448.88</span>
+<span class="level level-target">🎯 $496.12</span>
+</div>
+<div class="play-rationale">🧠 Balanced flow - P/C: 0.51. High liquidity: 523,859 vol. Range-bound premium selling opportunity.</div>
+<div class="play-meta"><span>R:R Max Credit</span><span>OPTIONS</span></div>
+</div>
 
-        <div class="trade-card swing" data-type="swing bullish"><div class="ai-tag">🔄 SWING | 2-3 WEEKS</div><div class="trade-header"><div class="trade-ticker"><span class="ticker-symbol">URA</span><span class="ticker-price">$28.90</span></div><span class="trade-badge badge-swing">SWING</span></div><div class="trade-strategy"><div class="strategy-label">Trade Type</div><div class="strategy-name">LONG ETF | Uranium | 2-3 Weeks</div></div><div class="price-levels"><div class="price-level entry">📍 Entry: $29</div><div class="price-level stop">🛑 Stop: $26</div></div><div class="price-levels"><div class="price-level target">🎯 PT1: $32</div><div class="price-level target">🎯 PT2: $35</div></div><div class="trade-details"><div class="detail-item"><div class="detail-label">Timeframe</div><div class="detail-value orange">2-3 Weeks</div></div><div class="detail-item"><div class="detail-label">R:R</div><div class="detail-value green">2.5:1</div></div></div><div class="trade-rationale">🧠 AI: Nuclear renaissance. AI data center power demand. Supply deficit thesis.</div></div>
-    </div>
+</div>
 
-    <!-- RISK RULES SECTION -->
-    <div id="risk-container" class="risk-grid hidden">
-        <div class="risk-card"><div class="risk-category"><div class="risk-icon">💰</div><div class="risk-title">Position Sizing</div></div><ul class="risk-rules"><li>Max 5% of portfolio per trade</li><li>Options positions max 2%</li><li>YOLO/speculative plays max 1%</li><li>Never go all-in on any single idea</li></ul></div>
-        <div class="risk-card"><div class="risk-category"><div class="risk-icon">🛑</div><div class="risk-title">Stop Losses</div></div><ul class="risk-rules"><li>ALWAYS set stops BEFORE entering</li><li>Honor your stops - no exceptions</li><li>Never move stops lower</li><li>Mental stops don't count - use real orders</li></ul></div>
-        <div class="risk-card"><div class="risk-category"><div class="risk-icon">🎯</div><div class="risk-title">Profit Taking</div></div><ul class="risk-rules"><li>Scale out: 1/3 at PT1, 1/3 at PT2, 1/3 runner</li><li>Move stop to breakeven after PT1</li><li>Let winners run, cut losers fast</li><li>Don't get greedy - take profits</li></ul></div>
-        <div class="risk-card"><div class="risk-category"><div class="risk-icon">📊</div><div class="risk-title">Options Rules</div></div><ul class="risk-rules"><li>Never hold through expiration</li><li>Exit min 2 weeks before expiry</li><li>If down 50%, reassess or cut</li><li>Buy low IV, sell high IV</li></ul></div>
-        <div class="risk-card"><div class="risk-category"><div class="risk-icon">🔄</div><div class="risk-title">Swing Trade Rules</div></div><ul class="risk-rules"><li>Use wider stops than day trades</li><li>Position size for overnight gaps</li><li>Check news before market open</li><li>Don't chase extended moves</li></ul></div>
-        <div class="risk-card"><div class="risk-category"><div class="risk-icon">🧠</div><div class="risk-title">Mental Game</div></div><ul class="risk-rules"><li>No revenge trading after losses</li><li>Journal every trade - learn</li><li>If anxious overnight, position too big</li><li>Take breaks - the market will be there</li></ul></div>
-    </div>
+<div class="risk-section">
+<div class="risk-grid">
+<div class="risk-card">
+<div class="risk-title">💰 Position Sizing</div>
+<ul class="risk-list">
+<li>Max 5% portfolio per trade</li>
+<li>Options max 2% per position</li>
+<li>Never go all-in on single idea</li>
+</ul>
+</div>
+<div class="risk-card">
+<div class="risk-title">🛑 Stop Losses</div>
+<ul class="risk-list">
+<li>Always set stops BEFORE entry</li>
+<li>Honor stops - no exceptions</li>
+<li>Use actual orders, not mental stops</li>
+</ul>
+</div>
+<div class="risk-card">
+<div class="risk-title">🎯 Profit Taking</div>
+<ul class="risk-list">
+<li>Scale out: 1/3 at PT1, 1/3 at PT2</li>
+<li>Move stop to breakeven after PT1</li>
+<li>Let winners run, cut losers fast</li>
+</ul>
+</div>
+</div>
+</div>
 
-    <footer class="footer">
-        <p class="footer-title">AI Options Analysis Dashboard</p>
-        <div class="legal-disclaimer">
-            <p><strong>⚠️ IMPORTANT LEGAL DISCLAIMER:</strong> This dashboard is for <strong>informational and educational purposes only</strong> and does not constitute investment advice. <strong>Nothing here should be construed as a recommendation to buy, sell, or hold any security.</strong></p>
-            <p>The analysis is based on AI-generated interpretations which may contain errors. <strong>Past performance is not indicative of future results.</strong> Consult a licensed financial advisor before making investment decisions.</p>
-            <p style="text-align:center;margin-top:16px;font-size:0.7rem;">© 2026 | Powered by Claude AI | <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#94a3b8">CC BY-NC-ND 4.0</a></p>
-        </div>
-    </footer>
+<div class="footer">
+<p><strong>⚠️ IMPORTANT DISCLAIMER:</strong> These plays are AI-generated from real options flow data for <strong>educational purposes only</strong>. This is NOT investment advice.</p>
+<p>Always do your own research and consult a licensed financial advisor before making any investment decisions. Past performance does not guarantee future results.</p>
+<p style="margin-top:12px">Data: Alpha Vantage Historical Options API • © 2026 AlphaOne LLC • CC BY-NC-ND 4.0</p>
+</div>
 </div>
 
 <script>
-document.querySelectorAll('.tab-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const filter = button.getAttribute('data-filter');
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        
-        const tradesContainer = document.getElementById('trades-container');
-        const riskContainer = document.getElementById('risk-container');
-        const allCards = tradesContainer.querySelectorAll('.trade-card');
-        
-        if (filter === 'risk') {
-            tradesContainer.classList.add('hidden');
-            riskContainer.classList.remove('hidden');
-        } else {
-            tradesContainer.classList.remove('hidden');
-            riskContainer.classList.add('hidden');
-            
-            allCards.forEach(card => {
-                const type = card.getAttribute('data-type');
-                if (filter === 'all') {
-                    card.classList.remove('hidden');
-                } else if (filter === 'swing') {
-                    card.classList.toggle('hidden', !type.includes('swing'));
-                } else if (filter === 'bullish') {
-                    card.classList.toggle('hidden', !type.includes('bullish'));
-                } else if (filter === 'bearish') {
-                    card.classList.toggle('hidden', !type.includes('bearish'));
-                } else if (filter === 'neutral') {
-                    card.classList.toggle('hidden', type !== 'neutral');
-                }
-            });
-        }
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.play-card').forEach(card => {
+            if (filter === 'all' || card.dataset.type === filter) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
     });
 });
 </script>

@@ -1,405 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Position Changes by Vega</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #1a1a1a;
-        }
-
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 0.95rem;
-            color: #666666;
-            font-style: italic;
-        }
-
-        .table-wrapper {
-            background: #ffffff;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: #808080;
-        }
-
-        thead th {
-            padding: 12px 14px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #ffffff;
-            border-right: 1px solid #999999;
-        }
-
-        thead th:last-child {
-            border-right: none;
-        }
-
-        tbody tr {
-            border-bottom: 1px solid #e8e8e8;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #fafafa;
-        }
-
-        tbody tr:nth-child(odd) {
-            background: #ffffff;
-        }
-
-        tbody tr:hover {
-            background: #f5f5f5;
-        }
-
-        tbody td {
-            padding: 11px 14px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #333333;
-            border-right: 1px solid #eeeeee;
-        }
-
-        tbody td:last-child {
-            border-right: none;
-        }
-
-        tbody td.stock {
-            font-weight: 600;
-        }
-
-        tbody td.positive {
-            color: #16a34a;
-            font-weight: 600;
-        }
-
-        tbody td.negative {
-            color: #dc2626;
-            font-weight: 600;
-        }
-
-        /* Spread ID color coding */
-        tbody td.spread-call-open { background: #dcfce7; }
-        tbody td.spread-call-close { background: #fef9c3; }
-        tbody td.spread-put-open { background: #fee2e2; }
-        tbody td.spread-put-close { background: #fce7f3; }
-        tbody td.spread-call-roll { background: #dbeafe; }
-        tbody td.spread-put-roll { background: #e0e7ff; }
-        tbody td.spread-short-strangle { background: #f3e8ff; }
-        tbody td.spread-long-strangle { background: #cffafe; }
-
-        @media (max-width: 1200px) {
-            .table-wrapper {
-                overflow-x: auto;
-            }
-            table {
-                min-width: 1400px;
-            }
-        }
-        /* Footer Styles */
-        .footer {
-            margin-top: 40px;
-            padding: 32px;
-            background: #0f172a;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-        }
-
-        .footer-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .footer-disclaimer {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .legal-disclaimer {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 6px;
-            border-left: 4px solid #f59e0b;
-        }
-
-        .legal-disclaimer p {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            line-height: 1.7;
-            margin-bottom: 12px;
-        }
-
-        .legal-disclaimer p:last-child {
-            margin-bottom: 0;
-        }
-
-        .legal-disclaimer strong {
-            color: #e2e8f0;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid #334155;
-            font-size: 0.7rem !important;
-            color: #64748b !important;
-        }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vega Position Changes | AlphaOne</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --bg-primary:#0a0e17; --bg-card:#1a2234; --accent-green:#00ff88; --accent-green-dim:rgba(0,255,136,0.15); --accent-red:#ff3366; --accent-red-dim:rgba(255,51,102,0.15); --accent-blue:#00d4ff; --accent-blue-dim:rgba(0,212,255,0.15); --accent-yellow:#ffd600; --accent-purple:#a855f7; --text-primary:#fff; --text-secondary:#94a3b8; --text-muted:#64748b; --border-color:#2d3748; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+.container{max-width:1600px;margin:0 auto;padding:30px 20px}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding:16px 24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px}
+.nav-back{color:var(--accent-green);text-decoration:none;font-weight:600}
+.header{text-align:center;margin-bottom:40px}
+.header h1{font-size:2rem;font-weight:900;margin-bottom:10px}
+.gradient-text{background:linear-gradient(135deg,var(--accent-green),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+table{width:100%;border-collapse:collapse;background:var(--bg-card);border-radius:12px;overflow:hidden}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-color)}
+th{background:var(--bg-primary);color:var(--text-muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px}
+td{font-family:'JetBrains Mono',monospace;font-size:0.85rem}
+tr:hover{background:rgba(0,255,136,0.05)}
+.call,.pos{color:var(--accent-green)}
+.put,.neg{color:var(--accent-red)}
+.footer{margin-top:40px;padding:20px;background:var(--bg-card);border-radius:12px;text-align:center}
+.footer p{font-size:0.7rem;color:var(--text-muted)}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Top Position Changes by Vega</h1>
-            <p>Positions with significant vega exposure changes can signal more/less sensitivity to changes in implied volatility. Color-coding indicates likely spreads.</p>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stock</th>
-                        <th>Strike</th>
-                        <th>Type</th>
-                        <th>Exp</th>
-                        <th>$ Vega Chg</th>
-                        <th>Stock Px</th>
-                        <th>IV</th>
-                        <th>BTO</th>
-                        <th>BTC</th>
-                        <th>STO</th>
-                        <th>STC</th>
-                        <th>Open Int</th>
-                        <th>1D Return</th>
-                        <th>5D Return</th>
-                        <th>Sector</th>
-                        <th>Spread ID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="stock">TSLA</td>
-                        <td>440.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$5.2M</td>
-                        <td>438.07</td>
-                        <td>54.32%</td>
-                        <td>25,678</td>
-                        <td>0</td>
-                        <td>12</td>
-                        <td>0</td>
-                        <td>78,234</td>
-                        <td class="negative">-2.59%</td>
-                        <td class="negative">-5.12%</td>
-                        <td>Consumer Cyclical</td>
-                        <td class="spread-call-open">Call Spread Open</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">NVDA</td>
-                        <td>195.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$4.8M</td>
-                        <td>188.85</td>
-                        <td>40.15%</td>
-                        <td>32,456</td>
-                        <td>0</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>112,345</td>
-                        <td class="positive">+1.26%</td>
-                        <td class="positive">+4.82%</td>
-                        <td>Technology</td>
-                        <td class="spread-long-strangle">Long Strangle</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">AMD</td>
-                        <td>230.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$3.6M</td>
-                        <td>223.47</td>
-                        <td>45.67%</td>
-                        <td>21,345</td>
-                        <td>0</td>
-                        <td>5</td>
-                        <td>0</td>
-                        <td>45,678</td>
-                        <td class="positive">+4.35%</td>
-                        <td class="positive">+8.21%</td>
-                        <td>Technology</td>
-                        <td class="spread-call-open">Call Spread Open</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">SPY</td>
-                        <td>690.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="negative">-$2.9M</td>
-                        <td>683.17</td>
-                        <td>12.34%</td>
-                        <td>0</td>
-                        <td>18,234</td>
-                        <td>0</td>
-                        <td>567</td>
-                        <td>256,789</td>
-                        <td class="positive">+0.18%</td>
-                        <td class="negative">-0.42%</td>
-                        <td>Equity ETF</td>
-                        <td class="spread-call-close">Call Spread Close</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">META</td>
-                        <td>670.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$2.4M</td>
-                        <td>650.41</td>
-                        <td>31.89%</td>
-                        <td>15,678</td>
-                        <td>0</td>
-                        <td>23</td>
-                        <td>0</td>
-                        <td>28,456</td>
-                        <td class="negative">-1.47%</td>
-                        <td class="negative">-2.89%</td>
-                        <td>Communication Services</td>
-                        <td class="spread-short-strangle">Short Strangle</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">QQQ</td>
-                        <td>620.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="negative">-$2.1M</td>
-                        <td>613.12</td>
-                        <td>19.45%</td>
-                        <td>0</td>
-                        <td>14,567</td>
-                        <td>0</td>
-                        <td>234</td>
-                        <td>145,678</td>
-                        <td class="negative">-0.19%</td>
-                        <td class="negative">-1.23%</td>
-                        <td>Equity ETF</td>
-                        <td class="spread-call-roll">Call Roll</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">GOOGL</td>
-                        <td>325.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$1.8M</td>
-                        <td>315.15</td>
-                        <td>25.67%</td>
-                        <td>12,345</td>
-                        <td>0</td>
-                        <td>15</td>
-                        <td>0</td>
-                        <td>34,567</td>
-                        <td class="positive">+0.69%</td>
-                        <td class="positive">+2.34%</td>
-                        <td>Communication Services</td>
-                        <td class="spread-call-open">Call Spread Open</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">AAPL</td>
-                        <td>280.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$1.5M</td>
-                        <td>271.01</td>
-                        <td>22.56%</td>
-                        <td>18,456</td>
-                        <td>0</td>
-                        <td>7</td>
-                        <td>0</td>
-                        <td>67,234</td>
-                        <td class="negative">-0.31%</td>
-                        <td class="positive">+1.45%</td>
-                        <td>Technology</td>
-                        <td class="spread-put-roll">Put Roll</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td>255.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="negative">-$1.2M</td>
-                        <td>248.78</td>
-                        <td>20.34%</td>
-                        <td>0</td>
-                        <td>11,234</td>
-                        <td>0</td>
-                        <td>345</td>
-                        <td>56,789</td>
-                        <td class="positive">+1.06%</td>
-                        <td class="positive">+2.87%</td>
-                        <td>Equity ETF</td>
-                        <td class="spread-call-close">Call Spread Close</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">MSFT</td>
-                        <td>490.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="positive">+$1.1M</td>
-                        <td>472.94</td>
-                        <td>20.89%</td>
-                        <td>9,876</td>
-                        <td>0</td>
-                        <td>12</td>
-                        <td>0</td>
-                        <td>78,456</td>
-                        <td class="negative">-2.21%</td>
-                        <td class="negative">-3.45%</td>
-                        <td>Technology</td>
-                        <td class="spread-long-strangle">Long Strangle</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
-</html>
+<div class="container">
+<nav class="nav-bar"><a href="ai_master_dashboard.html" class="nav-back">← Back to Dashboard</a></nav>
+<header class="header"><h1><span class="gradient-text">ν Vega Position Changes</span></h1><p style="color:var(--text-secondary)">Volatility exposure by symbol</p></header>
+<table>
+<thead><tr><th>Symbol</th><th>Price</th><th>Vega Exposure</th><th>Delta Exp</th><th>Gamma Exp</th><th>Total Volume</th><th>P/C Ratio</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>SPY</strong></td>
+<td>$683.00</td>
+<td style="color:var(--accent-purple)"><strong>$129.58M</strong></td>
+<td class="pos">$+25.89M</td>
+<td>$110.45M</td>
+<td>9,313,248</td>
+<td>0.94</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td>$613.00</td>
+<td style="color:var(--accent-purple)"><strong>$73.76M</strong></td>
+<td class="neg">$-40.48M</td>
+<td>$44.57M</td>
+<td>6,002,495</td>
+<td>0.76</td>
+</tr><tr>
+<td><strong>TSLA</strong></td>
+<td>$435.00</td>
+<td style="color:var(--accent-purple)"><strong>$46.69M</strong></td>
+<td class="neg">$-48.10M</td>
+<td>$9.48M</td>
+<td>3,496,738</td>
+<td>0.80</td>
+</tr><tr>
+<td><strong>NVDA</strong></td>
+<td>$187.50</td>
+<td style="color:var(--accent-purple)"><strong>$24.00M</strong></td>
+<td class="pos">$+5.71M</td>
+<td>$13.12M</td>
+<td>2,837,752</td>
+<td>0.56</td>
+</tr><tr>
+<td><strong>MSFT</strong></td>
+<td>$472.50</td>
+<td style="color:var(--accent-purple)"><strong>$14.74M</strong></td>
+<td class="pos">$+1.08M</td>
+<td>$1.86M</td>
+<td>523,859</td>
+<td>0.51</td>
+</tr><tr>
+<td><strong>IWM</strong></td>
+<td>$249.00</td>
+<td style="color:var(--accent-purple)"><strong>$14.58M</strong></td>
+<td class="pos">$+16.25M</td>
+<td>$10.36M</td>
+<td>1,246,093</td>
+<td>1.45</td>
+</tr><tr>
+<td><strong>META</strong></td>
+<td>$647.50</td>
+<td style="color:var(--accent-purple)"><strong>$13.90M</strong></td>
+<td class="pos">$+0.08M</td>
+<td>$1.91M</td>
+<td>521,934</td>
+<td>0.59</td>
+</tr><tr>
+<td><strong>AMZN</strong></td>
+<td>$225.00</td>
+<td style="color:var(--accent-purple)"><strong>$12.48M</strong></td>
+<td class="pos">$+4.88M</td>
+<td>$2.77M</td>
+<td>935,019</td>
+<td>0.41</td>
+</tr><tr>
+<td><strong>AAPL</strong></td>
+<td>$270.00</td>
+<td style="color:var(--accent-purple)"><strong>$9.91M</strong></td>
+<td class="neg">$-0.25M</td>
+<td>$2.55M</td>
+<td>851,517</td>
+<td>0.58</td>
+</tr><tr>
+<td><strong>GOOGL</strong></td>
+<td>$315.00</td>
+<td style="color:var(--accent-purple)"><strong>$6.77M</strong></td>
+<td class="pos">$+6.89M</td>
+<td>$5.21M</td>
+<td>441,685</td>
+<td>0.48</td>
+</tr><tr>
+<td><strong>AMD</strong></td>
+<td>$222.50</td>
+<td style="color:var(--accent-purple)"><strong>$6.55M</strong></td>
+<td class="pos">$+10.64M</td>
+<td>$2.38M</td>
+<td>716,735</td>
+<td>0.63</td>
+</tr></tbody></table>
+<div class="footer"><p>⚠️ Educational purposes only. Data: Alpha Vantage Historical Options API. © 2026 AlphaOne LLC</p></div>
+</div></body></html>

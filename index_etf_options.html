@@ -1,498 +1,565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index ETFs Largest Position Changes</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-teal: #3FBDB8;
-            --primary-teal-dark: #2A9D98;
-            --primary-teal-light: #5FCFCA;
-            --bg-dark: #1a2332;
-            --bg-card: #0f1419;
-            --text-primary: #ffffff;
-            --text-secondary: #a8b4c4;
-            --row-even: #141c28;
-            --row-odd: #0d131a;
-            --border-color: #2a3a4a;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-        }
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Index & ETF Options | AlphaOne</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --bg-primary:#0a0e17; --bg-card:#1a2234; --accent-green:#00ff88; --accent-green-dim:rgba(0,255,136,0.15); --accent-red:#ff3366; --accent-red-dim:rgba(255,51,102,0.15); --accent-blue:#00d4ff; --accent-blue-dim:rgba(0,212,255,0.15); --accent-yellow:#ffd600; --accent-purple:#a855f7; --text-primary:#fff; --text-secondary:#94a3b8; --text-muted:#64748b; --border-color:#2d3748; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+.container{max-width:1600px;margin:0 auto;padding:30px 20px}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding:16px 24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px}
+.nav-back{color:var(--accent-green);text-decoration:none;font-weight:600}
+.header{text-align:center;margin-bottom:40px}
+.header h1{font-size:2rem;font-weight:900;margin-bottom:10px}
+.gradient-text{background:linear-gradient(135deg,var(--accent-green),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+table{width:100%;border-collapse:collapse;background:var(--bg-card);border-radius:12px;overflow:hidden}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-color)}
+th{background:var(--bg-primary);color:var(--text-muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px}
+td{font-family:'JetBrains Mono',monospace;font-size:0.85rem}
+tr:hover{background:rgba(0,255,136,0.05)}
+.call{color:var(--accent-green)}
+.put{color:var(--accent-red)}
+.pos{color:var(--accent-green)}
+.neg{color:var(--accent-red)}
+.footer{margin-top:40px;padding:20px;background:var(--bg-card);border-radius:12px;text-align:center}
+.footer p{font-size:0.7rem;color:var(--text-muted)}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0a0f14 0%, #1a2332 50%, #0d1520 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: var(--text-primary);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .table-wrapper {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(63, 189, 184, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-
-        .table-header {
-            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-dark) 100%);
-            padding: 20px 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .table-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .table-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            text-align: center;
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .table-header .date-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-left: 12px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: linear-gradient(180deg, #1e2a3a 0%, #162030 100%);
-        }
-
-        thead th {
-            padding: 16px 20px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--primary-teal-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid var(--primary-teal);
-            position: relative;
-        }
-
-        thead th::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--text-primary);
-            transition: width 0.3s ease;
-        }
-
-        thead th:hover::after {
-            width: 80%;
-        }
-
-        tbody tr {
-            transition: all 0.2s ease;
-        }
-
-        tbody tr:nth-child(even) {
-            background: var(--row-even);
-        }
-
-        tbody tr:nth-child(odd) {
-            background: var(--row-odd);
-        }
-
-        tbody tr:hover {
-            background: rgba(63, 189, 184, 0.1);
-            transform: scale(1.002);
-        }
-
-        tbody td {
-            padding: 14px 20px;
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-        }
-
-        tbody td.stock {
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-weight: 600;
-            color: var(--primary-teal-light);
-            letter-spacing: 1px;
-        }
-
-        tbody td.strike {
-            color: var(--text-primary);
-        }
-
-        tbody td.type {
-            font-weight: 600;
-        }
-
-        tbody td.type.put {
-            color: var(--accent-red);
-        }
-
-        tbody td.type.call {
-            color: var(--accent-green);
-        }
-
-        tbody td.exp {
-            color: var(--text-secondary);
-        }
-
-        tbody td.iv {
-            color: #fbbf24;
-            font-weight: 500;
-        }
-
-        tbody td.volume {
-            color: var(--text-primary);
-        }
-
-        tbody td.volume.highlight {
-            color: var(--accent-green);
-            font-weight: 600;
-        }
-
-        .footer {
-            padding: 16px 32px;
-            background: linear-gradient(180deg, #0a0f14 0%, #0d1419 100%);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .legend {
-            display: flex;
-            gap: 24px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.put { background: var(--accent-red); }
-        .legend-dot.call { background: var(--accent-green); }
-
-        .data-source {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            opacity: 0.7;
-        }
-
-        .data-source a {
-            color: var(--primary-teal);
-            text-decoration: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .table-wrapper {
-                overflow-x: auto;
-            }
-            
-            table {
-                min-width: 800px;
-            }
-            
-            .table-header h1 {
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Number formatting for large volumes */
-        .volume-large {
-            position: relative;
-        }
-
-        .zero-value {
-            color: #4a5568;
-        }
-        /* Footer Styles */
-        .footer {
-            margin-top: 40px;
-            padding: 32px;
-            background: #0f172a;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-        }
-
-        .footer-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .footer-disclaimer {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .legal-disclaimer {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 6px;
-            border-left: 4px solid #f59e0b;
-        }
-
-        .legal-disclaimer p {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            line-height: 1.7;
-            margin-bottom: 12px;
-        }
-
-        .legal-disclaimer p:last-child {
-            margin-bottom: 0;
-        }
-
-        .legal-disclaimer strong {
-            color: #e2e8f0;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid #334155;
-            font-size: 0.7rem !important;
-            color: #64748b !important;
-        }
-    </style>
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:30px}
+.summary-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:20px}
+.summary-card h3{font-size:1.2rem;margin-bottom:10px}
+.summary-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-color);font-size:0.85rem}
+.summary-stat:last-child{border-bottom:none}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="table-wrapper">
-            <div class="table-header">
-                <h1>Index ETFs Largest Position Changes <span class="date-badge">01/02/26</span></h1>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stock</th>
-                        <th>Strike</th>
-                        <th>Type</th>
-                        <th>Exp</th>
-                        <th>IV</th>
-                        <th>BTO</th>
-                        <th>BTC</th>
-                        <th>STO</th>
-                        <th>STC</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td class="strike">245.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">01/17/26</td>
-                        <td class="iv">24.18%</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">4,892</td>
-                        <td class="volume highlight">47,231</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td class="strike">247.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">01/17/26</td>
-                        <td class="iv">23.95%</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">12</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume highlight">42,876</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td class="strike">248.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">01/17/26</td>
-                        <td class="iv">23.72%</td>
-                        <td class="volume highlight">41,508</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">8</td>
-                        <td class="volume zero-value">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td class="strike">250.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">02/21/26</td>
-                        <td class="iv">21.84%</td>
-                        <td class="volume">22,145</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">12</td>
-                        <td class="volume zero-value">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td class="strike">252.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">02/21/26</td>
-                        <td class="iv">20.93%</td>
-                        <td class="volume">18,672</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">45</td>
-                        <td class="volume zero-value">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">QQQ</td>
-                        <td class="strike">600.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">03/20/26</td>
-                        <td class="iv">21.45%</td>
-                        <td class="volume">23,891</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">5</td>
-                        <td class="volume zero-value">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">SPY</td>
-                        <td class="strike">680.00</td>
-                        <td class="type call">C</td>
-                        <td class="exp">01/10/26</td>
-                        <td class="iv">8.12%</td>
-                        <td class="volume">32</td>
-                        <td class="volume">19,847</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume zero-value">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">SPY</td>
-                        <td class="strike">685.00</td>
-                        <td class="type call">C</td>
-                        <td class="exp">01/10/26</td>
-                        <td class="iv">7.89%</td>
-                        <td class="volume">18</td>
-                        <td class="volume">24,532</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume zero-value">0</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">VIXY</td>
-                        <td class="strike">24.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">01/17/26</td>
-                        <td class="iv">62.34%</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume highlight">41,276</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">892</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">VIXY</td>
-                        <td class="strike">26.00</td>
-                        <td class="type put">P</td>
-                        <td class="exp">01/17/26</td>
-                        <td class="iv">85.21%</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">2</td>
-                        <td class="volume highlight">21,043</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">VIXY</td>
-                        <td class="strike">27.00</td>
-                        <td class="type call">C</td>
-                        <td class="exp">03/20/26</td>
-                        <td class="iv">64.87%</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume highlight">58,923</td>
-                        <td class="volume zero-value">0</td>
-                        <td class="volume">4,521</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="footer">
-                <div class="footer-left">
-                    <div class="legend">
-                        <div class="legend-item">
-                            <span class="legend-dot put"></span>
-                            <span>Put</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot call"></span>
-                            <span>Call</span>
-                        </div>
-                    </div>
-                    <div class="legend" style="margin-left: 20px; padding-left: 20px; border-left: 1px solid var(--border-color);">
-                        <span>BTO: Buy to Open</span>
-                        <span>BTC: Buy to Close</span>
-                        <span>STO: Sell to Open</span>
-                        <span>STC: Sell to Close</span>
-                    </div>
-                </div>
-                <div class="data-source">
-                    Last Trading Day: 01/02/2026 · Sample Data
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+<div class="container">
+<nav class="nav-bar"><a href="ai_master_dashboard.html" class="nav-back">← Back to Dashboard</a></nav>
+<header class="header"><h1><span class="gradient-text">📈 Index & ETF Options</span></h1></header>
+<div class="summary-grid">
+<div class="summary-card">
+<h3>SPY <span style="color:var(--text-muted);font-size:0.8rem">$683.00</span></h3>
+<div class="summary-stat"><span>Call Volume</span><span class="call">4,789,561</span></div>
+<div class="summary-stat"><span>Put Volume</span><span class="put">4,523,687</span></div>
+<div class="summary-stat"><span>P/C Ratio</span><span>0.94</span></div>
+<div class="summary-stat"><span>Delta Exp</span><span class="pos">$+25.9M</span></div>
+</div><div class="summary-card">
+<h3>QQQ <span style="color:var(--text-muted);font-size:0.8rem">$613.00</span></h3>
+<div class="summary-stat"><span>Call Volume</span><span class="call">3,417,738</span></div>
+<div class="summary-stat"><span>Put Volume</span><span class="put">2,584,757</span></div>
+<div class="summary-stat"><span>P/C Ratio</span><span>0.76</span></div>
+<div class="summary-stat"><span>Delta Exp</span><span class="neg">$-40.5M</span></div>
+</div><div class="summary-card">
+<h3>IWM <span style="color:var(--text-muted);font-size:0.8rem">$249.00</span></h3>
+<div class="summary-stat"><span>Call Volume</span><span class="call">509,424</span></div>
+<div class="summary-stat"><span>Put Volume</span><span class="put">736,669</span></div>
+<div class="summary-stat"><span>P/C Ratio</span><span>1.45</span></div>
+<div class="summary-stat"><span>Delta Exp</span><span class="pos">$+16.3M</span></div>
+</div></div>
+<table>
+<thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Exp</th><th>Volume</th><th>OI</th><th>Premium</th><th>Delta</th><th>Gamma</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$683</td>
+<td>2026-01-02</td>
+<td>536,036</td>
+<td>9,494</td>
+<td>$24.12M</td>
+<td>0.61</td>
+<td>0.4366</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$684</td>
+<td>2026-01-02</td>
+<td>496,228</td>
+<td>13,537</td>
+<td>$0.50M</td>
+<td>0.08</td>
+<td>0.2695</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$681</td>
+<td>2026-01-02</td>
+<td>492,704</td>
+<td>14,738</td>
+<td>$0.49M</td>
+<td>-0.03</td>
+<td>0.0615</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$682</td>
+<td>2026-01-02</td>
+<td>447,423</td>
+<td>8,901</td>
+<td>$0.89M</td>
+<td>-0.01</td>
+<td>0.0497</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$685</td>
+<td>2026-01-02</td>
+<td>443,753</td>
+<td>21,234</td>
+<td>$0.44M</td>
+<td>0.02</td>
+<td>0.0617</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$683</td>
+<td>2026-01-02</td>
+<td>439,282</td>
+<td>10,427</td>
+<td>$1.32M</td>
+<td>-0.33</td>
+<td>0.6783</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$682</td>
+<td>2026-01-02</td>
+<td>419,243</td>
+<td>3,314</td>
+<td>$115.29M</td>
+<td>0.66</td>
+<td>0.1229</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$684</td>
+<td>2026-01-02</td>
+<td>346,660</td>
+<td>43,597</td>
+<td>$20.80M</td>
+<td>-0.92</td>
+<td>0.2695</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$680</td>
+<td>2026-01-02</td>
+<td>339,024</td>
+<td>12,446</td>
+<td>$0.34M</td>
+<td>-0.02</td>
+<td>0.0305</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$686</td>
+<td>2026-01-02</td>
+<td>310,142</td>
+<td>13,376</td>
+<td>$0.31M</td>
+<td>0.01</td>
+<td>0.0264</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$687</td>
+<td>2026-01-02</td>
+<td>280,867</td>
+<td>44,169</td>
+<td>$0.28M</td>
+<td>0.01</td>
+<td>0.0150</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$681</td>
+<td>2026-01-02</td>
+<td>208,346</td>
+<td>1,955</td>
+<td>$48.54M</td>
+<td>0.92</td>
+<td>0.0921</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$685</td>
+<td>2026-01-02</td>
+<td>204,855</td>
+<td>12,772</td>
+<td>$37.28M</td>
+<td>-0.75</td>
+<td>0.1216</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$615</td>
+<td>2026-01-02</td>
+<td>199,996</td>
+<td>7,009</td>
+<td>$0.20M</td>
+<td>0.01</td>
+<td>0.0361</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$614</td>
+<td>2026-01-02</td>
+<td>193,641</td>
+<td>1,637</td>
+<td>$0.58M</td>
+<td>0.15</td>
+<td>0.2956</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$613</td>
+<td>2026-01-02</td>
+<td>183,449</td>
+<td>886</td>
+<td>$6.97M</td>
+<td>0.59</td>
+<td>0.4915</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$621</td>
+<td>2026-01-02</td>
+<td>174,808</td>
+<td>19,949</td>
+<td>$0.17M</td>
+<td>0.01</td>
+<td>0.0076</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$679</td>
+<td>2026-01-02</td>
+<td>168,123</td>
+<td>6,471</td>
+<td>$0.17M</td>
+<td>-0.01</td>
+<td>0.0181</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$688</td>
+<td>2026-01-02</td>
+<td>166,084</td>
+<td>15,986</td>
+<td>$0.17M</td>
+<td>0.02</td>
+<td>0.0200</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$613</td>
+<td>2026-01-02</td>
+<td>156,637</td>
+<td>5,652</td>
+<td>$1.57M</td>
+<td>-0.35</td>
+<td>0.7774</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$617</td>
+<td>2026-01-02</td>
+<td>156,181</td>
+<td>8,084</td>
+<td>$0.16M</td>
+<td>0.01</td>
+<td>0.0205</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$620</td>
+<td>2026-01-02</td>
+<td>154,032</td>
+<td>16,453</td>
+<td>$0.15M</td>
+<td>0.01</td>
+<td>0.0101</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$612</td>
+<td>2026-01-02</td>
+<td>143,307</td>
+<td>4,412</td>
+<td>$0.14M</td>
+<td>-0.07</td>
+<td>0.1648</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$622</td>
+<td>2026-01-02</td>
+<td>141,156</td>
+<td>8,630</td>
+<td>$0.14M</td>
+<td>0.01</td>
+<td>0.0059</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$615</td>
+<td>2026-01-02</td>
+<td>139,554</td>
+<td>51,938</td>
+<td>$24.98M</td>
+<td>-1.00</td>
+<td>0.0006</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$612</td>
+<td>2026-01-02</td>
+<td>137,965</td>
+<td>1,373</td>
+<td>$17.94M</td>
+<td>0.80</td>
+<td>0.1986</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$618</td>
+<td>2026-01-02</td>
+<td>134,794</td>
+<td>15,799</td>
+<td>$0.13M</td>
+<td>0.01</td>
+<td>0.0124</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$678</td>
+<td>2026-01-02</td>
+<td>133,611</td>
+<td>13,275</td>
+<td>$0.13M</td>
+<td>-0.01</td>
+<td>0.0121</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$616</td>
+<td>2026-01-02</td>
+<td>132,988</td>
+<td>4,400</td>
+<td>$0.13M</td>
+<td>0.02</td>
+<td>0.0394</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$611</td>
+<td>2026-01-02</td>
+<td>122,934</td>
+<td>4,340</td>
+<td>$0.12M</td>
+<td>-0.02</td>
+<td>0.0508</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$614</td>
+<td>2026-01-02</td>
+<td>120,760</td>
+<td>5,838</td>
+<td>$9.42M</td>
+<td>-0.96</td>
+<td>0.1926</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$686</td>
+<td>2026-01-02</td>
+<td>118,508</td>
+<td>6,728</td>
+<td>$31.17M</td>
+<td>-0.80</td>
+<td>0.0853</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$610</td>
+<td>2026-01-02</td>
+<td>106,327</td>
+<td>12,351</td>
+<td>$0.11M</td>
+<td>-0.01</td>
+<td>0.0223</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$619</td>
+<td>2026-01-02</td>
+<td>106,004</td>
+<td>10,576</td>
+<td>$0.11M</td>
+<td>0.02</td>
+<td>0.0143</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$623</td>
+<td>2026-01-02</td>
+<td>99,656</td>
+<td>8,433</td>
+<td>$0.10M</td>
+<td>0.01</td>
+<td>0.0047</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$683</td>
+<td>2026-01-05</td>
+<td>92,158</td>
+<td>1,436</td>
+<td>$17.51M</td>
+<td>0.53</td>
+<td>0.0874</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$620</td>
+<td>2026-01-02</td>
+<td>86,503</td>
+<td>6,910</td>
+<td>$60.55M</td>
+<td>-1.00</td>
+<td>0.0000</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$619</td>
+<td>2026-01-02</td>
+<td>84,900</td>
+<td>3,661</td>
+<td>$50.43M</td>
+<td>-1.00</td>
+<td>0.0000</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$609</td>
+<td>2026-01-02</td>
+<td>83,516</td>
+<td>16,421</td>
+<td>$0.08M</td>
+<td>-0.02</td>
+<td>0.0236</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$684</td>
+<td>2026-01-05</td>
+<td>83,131</td>
+<td>3,380</td>
+<td>$11.31M</td>
+<td>0.44</td>
+<td>0.1000</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$685</td>
+<td>2026-01-05</td>
+<td>80,476</td>
+<td>5,742</td>
+<td>$7.40M</td>
+<td>0.34</td>
+<td>0.0931</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$680</td>
+<td>2026-01-02</td>
+<td>80,282</td>
+<td>8,500</td>
+<td>$27.70M</td>
+<td>1.00</td>
+<td>0.0000</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$618</td>
+<td>2026-01-02</td>
+<td>79,419</td>
+<td>6,596</td>
+<td>$37.72M</td>
+<td>-1.00</td>
+<td>0.0000</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$677</td>
+<td>2026-01-02</td>
+<td>79,249</td>
+<td>7,388</td>
+<td>$0.08M</td>
+<td>-0.01</td>
+<td>0.0088</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$689</td>
+<td>2026-01-02</td>
+<td>75,588</td>
+<td>15,587</td>
+<td>$0.08M</td>
+<td>0.01</td>
+<td>0.0140</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$616</td>
+<td>2026-01-02</td>
+<td>72,420</td>
+<td>4,359</td>
+<td>$20.28M</td>
+<td>-1.00</td>
+<td>0.0000</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$690</td>
+<td>2026-01-02</td>
+<td>71,109</td>
+<td>46,757</td>
+<td>$0.07M</td>
+<td>0.01</td>
+<td>0.0104</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$617</td>
+<td>2026-01-02</td>
+<td>70,258</td>
+<td>6,403</td>
+<td>$26.35M</td>
+<td>-1.00</td>
+<td>0.0000</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$683</td>
+<td>2026-01-05</td>
+<td>68,211</td>
+<td>4,543</td>
+<td>$9.75M</td>
+<td>-0.46</td>
+<td>0.1007</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$682</td>
+<td>2026-01-05</td>
+<td>68,199</td>
+<td>1,749</td>
+<td>$7.23M</td>
+<td>-0.36</td>
+<td>0.0951</td>
+</tr></tbody></table>
+<div class="footer"><p>⚠️ Educational purposes only. Data: Alpha Vantage. © 2026 AlphaOne LLC</p></div>
+</div></body></html>

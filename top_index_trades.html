@@ -1,392 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Index Trades</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #1a1a1a;
-        }
-
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        .table-wrapper {
-            background: #ffffff;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: #808080;
-        }
-
-        thead th {
-            padding: 12px 14px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #ffffff;
-            border-right: 1px solid #999999;
-        }
-
-        thead th:last-child {
-            border-right: none;
-        }
-
-        tbody tr {
-            border-bottom: 1px solid #e8e8e8;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #fafafa;
-        }
-
-        tbody tr:nth-child(odd) {
-            background: #ffffff;
-        }
-
-        tbody tr:hover {
-            background: #f5f5f5;
-        }
-
-        tbody td {
-            padding: 11px 14px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #333333;
-            border-right: 1px solid #eeeeee;
-        }
-
-        tbody td:last-child {
-            border-right: none;
-        }
-
-        tbody td.stock {
-            font-weight: 600;
-        }
-
-        tbody td.positive {
-            color: #16a34a;
-            font-weight: 600;
-        }
-
-        tbody td.negative {
-            color: #dc2626;
-            font-weight: 600;
-        }
-
-        tbody td.premium {
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        /* Spread ID color coding */
-        tbody td.spread-call-open { background: #dcfce7; }
-        tbody td.spread-call-close { background: #fef9c3; }
-        tbody td.spread-put-open { background: #fee2e2; }
-        tbody td.spread-put-close { background: #fce7f3; }
-        tbody td.spread-call-roll { background: #dbeafe; }
-        tbody td.spread-put-roll { background: #e0e7ff; }
-        tbody td.spread-short-strangle { background: #f3e8ff; }
-        tbody td.spread-long-strangle { background: #cffafe; }
-
-        @media (max-width: 1200px) {
-            .table-wrapper {
-                overflow-x: auto;
-            }
-            table {
-                min-width: 1300px;
-            }
-        }
-        /* Footer Styles */
-        .footer {
-            margin-top: 40px;
-            padding: 32px;
-            background: #0f172a;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-        }
-
-        .footer-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .footer-disclaimer {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .legal-disclaimer {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 6px;
-            border-left: 4px solid #f59e0b;
-        }
-
-        .legal-disclaimer p {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            line-height: 1.7;
-            margin-bottom: 12px;
-        }
-
-        .legal-disclaimer p:last-child {
-            margin-bottom: 0;
-        }
-
-        .legal-disclaimer strong {
-            color: #e2e8f0;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid #334155;
-            font-size: 0.7rem !important;
-            color: #64748b !important;
-        }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Index Trades | AlphaOne</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --bg-primary:#0a0e17; --bg-card:#1a2234; --accent-green:#00ff88; --accent-green-dim:rgba(0,255,136,0.15); --accent-red:#ff3366; --accent-red-dim:rgba(255,51,102,0.15); --accent-blue:#00d4ff; --accent-blue-dim:rgba(0,212,255,0.15); --accent-yellow:#ffd600; --accent-purple:#a855f7; --text-primary:#fff; --text-secondary:#94a3b8; --text-muted:#64748b; --border-color:#2d3748; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+.container{max-width:1600px;margin:0 auto;padding:30px 20px}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding:16px 24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px}
+.nav-back{color:var(--accent-green);text-decoration:none;font-weight:600}
+.header{text-align:center;margin-bottom:40px}
+.header h1{font-size:2rem;font-weight:900;margin-bottom:10px}
+.gradient-text{background:linear-gradient(135deg,var(--accent-green),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+table{width:100%;border-collapse:collapse;background:var(--bg-card);border-radius:12px;overflow:hidden}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border-color)}
+th{background:var(--bg-primary);color:var(--text-muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px}
+td{font-family:'JetBrains Mono',monospace;font-size:0.85rem}
+tr:hover{background:rgba(0,255,136,0.05)}
+.call,.pos{color:var(--accent-green)}
+.put,.neg{color:var(--accent-red)}
+.footer{margin-top:40px;padding:20px;background:var(--bg-card);border-radius:12px;text-align:center}
+.footer p{font-size:0.7rem;color:var(--text-muted)}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Top Index Trades</h1>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stock</th>
-                        <th>Strike</th>
-                        <th>Type</th>
-                        <th>Exp</th>
-                        <th>Premium</th>
-                        <th>Stock Px</th>
-                        <th>IV</th>
-                        <th>BTO</th>
-                        <th>BTC</th>
-                        <th>STO</th>
-                        <th>STC</th>
-                        <th>Open Int</th>
-                        <th>1D Return</th>
-                        <th>5D Return</th>
-                        <th>Spread ID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="stock">SPY</td>
-                        <td>685.00</td>
-                        <td>C</td>
-                        <td>01/10/26</td>
-                        <td class="premium">$38.5M</td>
-                        <td>683.17</td>
-                        <td>7.89%</td>
-                        <td>18</td>
-                        <td>24,532</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>234,567</td>
-                        <td class="positive">+0.18%</td>
-                        <td class="negative">-0.42%</td>
-                        <td class="spread-call-roll">Call Roll</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">SPY</td>
-                        <td>680.00</td>
-                        <td>C</td>
-                        <td>01/10/26</td>
-                        <td class="premium">$32.1M</td>
-                        <td>683.17</td>
-                        <td>8.12%</td>
-                        <td>32</td>
-                        <td>19,847</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>312,456</td>
-                        <td class="positive">+0.18%</td>
-                        <td class="negative">-0.42%</td>
-                        <td class="spread-call-open">Call Spread Open</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">QQQ</td>
-                        <td>600.00</td>
-                        <td>P</td>
-                        <td>03/20/26</td>
-                        <td class="premium">$28.9M</td>
-                        <td>613.12</td>
-                        <td>21.45%</td>
-                        <td>23,891</td>
-                        <td>0</td>
-                        <td>5</td>
-                        <td>0</td>
-                        <td>89,234</td>
-                        <td class="negative">-0.19%</td>
-                        <td class="negative">-1.23%</td>
-                        <td class="spread-long-strangle">Long Strangle</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">QQQ</td>
-                        <td>615.00</td>
-                        <td>C</td>
-                        <td>01/17/26</td>
-                        <td class="premium">$24.6M</td>
-                        <td>613.12</td>
-                        <td>18.92%</td>
-                        <td>0</td>
-                        <td>18,456</td>
-                        <td>0</td>
-                        <td>892</td>
-                        <td>178,234</td>
-                        <td class="negative">-0.19%</td>
-                        <td class="negative">-1.23%</td>
-                        <td class="spread-call-close">Call Spread Close</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td>248.00</td>
-                        <td>P</td>
-                        <td>01/17/26</td>
-                        <td class="premium">$16.5M</td>
-                        <td>248.78</td>
-                        <td>23.72%</td>
-                        <td>41,508</td>
-                        <td>0</td>
-                        <td>8</td>
-                        <td>0</td>
-                        <td>78,432</td>
-                        <td class="positive">+1.06%</td>
-                        <td class="positive">+2.87%</td>
-                        <td class="spread-short-strangle">Short Strangle</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td>245.00</td>
-                        <td>P</td>
-                        <td>01/17/26</td>
-                        <td class="premium">$14.2M</td>
-                        <td>248.78</td>
-                        <td>24.18%</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>4,892</td>
-                        <td>47,231</td>
-                        <td>125,678</td>
-                        <td class="positive">+1.06%</td>
-                        <td class="positive">+2.87%</td>
-                        <td class="spread-put-close">Put Spread Close</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">SPY</td>
-                        <td>690.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="premium">$12.8M</td>
-                        <td>683.17</td>
-                        <td>12.34%</td>
-                        <td>0</td>
-                        <td>18,234</td>
-                        <td>0</td>
-                        <td>567</td>
-                        <td>256,789</td>
-                        <td class="positive">+0.18%</td>
-                        <td class="negative">-0.42%</td>
-                        <td class="spread-call-close">Call Spread Close</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td>250.00</td>
-                        <td>P</td>
-                        <td>02/21/26</td>
-                        <td class="premium">$11.5M</td>
-                        <td>248.78</td>
-                        <td>21.84%</td>
-                        <td>22,145</td>
-                        <td>0</td>
-                        <td>12</td>
-                        <td>0</td>
-                        <td>45,678</td>
-                        <td class="positive">+1.06%</td>
-                        <td class="positive">+2.87%</td>
-                        <td class="spread-put-roll">Put Roll</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">QQQ</td>
-                        <td>620.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="premium">$9.8M</td>
-                        <td>613.12</td>
-                        <td>19.45%</td>
-                        <td>0</td>
-                        <td>14,567</td>
-                        <td>0</td>
-                        <td>234</td>
-                        <td>145,678</td>
-                        <td class="negative">-0.19%</td>
-                        <td class="negative">-1.23%</td>
-                        <td class="spread-call-roll">Call Roll</td>
-                    </tr>
-                    <tr>
-                        <td class="stock">IWM</td>
-                        <td>255.00</td>
-                        <td>C</td>
-                        <td>03/20/26</td>
-                        <td class="premium">$8.4M</td>
-                        <td>248.78</td>
-                        <td>20.34%</td>
-                        <td>0</td>
-                        <td>11,234</td>
-                        <td>0</td>
-                        <td>345</td>
-                        <td>56,789</td>
-                        <td class="positive">+1.06%</td>
-                        <td class="positive">+2.87%</td>
-                        <td class="spread-call-close">Call Spread Close</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
-</html>
+<div class="container">
+<nav class="nav-bar"><a href="ai_master_dashboard.html" class="nav-back">← Back to Dashboard</a></nav>
+<header class="header"><h1><span class="gradient-text">📊 Top Index Trades</span></h1><p style="color:var(--text-secondary)">SPY, QQQ, IWM - Highest Volume Transactions</p></header>
+<table>
+<thead><tr><th>Symbol</th><th>Type</th><th>Strike</th><th>Exp</th><th>Volume</th><th>OI</th><th>Premium</th><th>Delta</th><th>Gamma</th><th>IV</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$683</td>
+<td>2026-01-02</td>
+<td>536,036</td>
+<td>9,494</td>
+<td>$24.12M</td>
+<td>0.607</td>
+<td>0.43656</td>
+<td>2%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$684</td>
+<td>2026-01-02</td>
+<td>496,228</td>
+<td>13,537</td>
+<td>$0.50M</td>
+<td>0.076</td>
+<td>0.26946</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$681</td>
+<td>2026-01-02</td>
+<td>492,704</td>
+<td>14,738</td>
+<td>$0.49M</td>
+<td>-0.034</td>
+<td>0.06150</td>
+<td>3%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$682</td>
+<td>2026-01-02</td>
+<td>447,423</td>
+<td>8,901</td>
+<td>$0.89M</td>
+<td>-0.010</td>
+<td>0.04973</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$685</td>
+<td>2026-01-02</td>
+<td>443,753</td>
+<td>21,234</td>
+<td>$0.44M</td>
+<td>0.023</td>
+<td>0.06170</td>
+<td>2%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$683</td>
+<td>2026-01-02</td>
+<td>439,282</td>
+<td>10,427</td>
+<td>$1.32M</td>
+<td>-0.327</td>
+<td>0.67826</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$682</td>
+<td>2026-01-02</td>
+<td>419,243</td>
+<td>3,314</td>
+<td>$115.29M</td>
+<td>0.662</td>
+<td>0.12288</td>
+<td>8%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$684</td>
+<td>2026-01-02</td>
+<td>346,660</td>
+<td>43,597</td>
+<td>$20.80M</td>
+<td>-0.924</td>
+<td>0.26946</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$680</td>
+<td>2026-01-02</td>
+<td>339,024</td>
+<td>12,446</td>
+<td>$0.34M</td>
+<td>-0.020</td>
+<td>0.03046</td>
+<td>4%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$686</td>
+<td>2026-01-02</td>
+<td>310,142</td>
+<td>13,376</td>
+<td>$0.31M</td>
+<td>0.013</td>
+<td>0.02638</td>
+<td>3%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$687</td>
+<td>2026-01-02</td>
+<td>280,867</td>
+<td>44,169</td>
+<td>$0.28M</td>
+<td>0.009</td>
+<td>0.01505</td>
+<td>4%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$681</td>
+<td>2026-01-02</td>
+<td>208,346</td>
+<td>1,955</td>
+<td>$48.54M</td>
+<td>0.922</td>
+<td>0.09206</td>
+<td>4%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$685</td>
+<td>2026-01-02</td>
+<td>204,855</td>
+<td>12,772</td>
+<td>$37.28M</td>
+<td>-0.748</td>
+<td>0.12155</td>
+<td>7%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$615</td>
+<td>2026-01-02</td>
+<td>199,996</td>
+<td>7,009</td>
+<td>$0.20M</td>
+<td>0.011</td>
+<td>0.03612</td>
+<td>2%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$614</td>
+<td>2026-01-02</td>
+<td>193,641</td>
+<td>1,637</td>
+<td>$0.58M</td>
+<td>0.150</td>
+<td>0.29557</td>
+<td>2%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$613</td>
+<td>2026-01-02</td>
+<td>183,449</td>
+<td>886</td>
+<td>$6.97M</td>
+<td>0.591</td>
+<td>0.49149</td>
+<td>2%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$621</td>
+<td>2026-01-02</td>
+<td>174,808</td>
+<td>19,949</td>
+<td>$0.17M</td>
+<td>0.009</td>
+<td>0.00757</td>
+<td>10%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$679</td>
+<td>2026-01-02</td>
+<td>168,123</td>
+<td>6,471</td>
+<td>$0.17M</td>
+<td>-0.014</td>
+<td>0.01813</td>
+<td>5%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$688</td>
+<td>2026-01-02</td>
+<td>166,084</td>
+<td>15,986</td>
+<td>$0.17M</td>
+<td>0.019</td>
+<td>0.02003</td>
+<td>6%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$613</td>
+<td>2026-01-02</td>
+<td>156,637</td>
+<td>5,652</td>
+<td>$1.57M</td>
+<td>-0.352</td>
+<td>0.77740</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$617</td>
+<td>2026-01-02</td>
+<td>156,181</td>
+<td>8,084</td>
+<td>$0.16M</td>
+<td>0.014</td>
+<td>0.02054</td>
+<td>5%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$620</td>
+<td>2026-01-02</td>
+<td>154,032</td>
+<td>16,453</td>
+<td>$0.15M</td>
+<td>0.012</td>
+<td>0.01014</td>
+<td>9%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$612</td>
+<td>2026-01-02</td>
+<td>143,307</td>
+<td>4,412</td>
+<td>$0.14M</td>
+<td>-0.067</td>
+<td>0.16481</td>
+<td>2%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$622</td>
+<td>2026-01-02</td>
+<td>141,156</td>
+<td>8,630</td>
+<td>$0.14M</td>
+<td>0.008</td>
+<td>0.00587</td>
+<td>11%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$615</td>
+<td>2026-01-02</td>
+<td>139,554</td>
+<td>51,938</td>
+<td>$24.98M</td>
+<td>-1.000</td>
+<td>0.00060</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$612</td>
+<td>2026-01-02</td>
+<td>137,965</td>
+<td>1,373</td>
+<td>$17.94M</td>
+<td>0.798</td>
+<td>0.19861</td>
+<td>4%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$618</td>
+<td>2026-01-02</td>
+<td>134,794</td>
+<td>15,799</td>
+<td>$0.13M</td>
+<td>0.009</td>
+<td>0.01241</td>
+<td>6%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$678</td>
+<td>2026-01-02</td>
+<td>133,611</td>
+<td>13,275</td>
+<td>$0.13M</td>
+<td>-0.010</td>
+<td>0.01212</td>
+<td>6%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$616</td>
+<td>2026-01-02</td>
+<td>132,988</td>
+<td>4,400</td>
+<td>$0.13M</td>
+<td>0.024</td>
+<td>0.03936</td>
+<td>4%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$611</td>
+<td>2026-01-02</td>
+<td>122,934</td>
+<td>4,340</td>
+<td>$0.12M</td>
+<td>-0.024</td>
+<td>0.05085</td>
+<td>3%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$614</td>
+<td>2026-01-02</td>
+<td>120,760</td>
+<td>5,838</td>
+<td>$9.42M</td>
+<td>-0.957</td>
+<td>0.19256</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="put">PUT</td>
+<td>$686</td>
+<td>2026-01-02</td>
+<td>118,508</td>
+<td>6,728</td>
+<td>$31.17M</td>
+<td>-0.796</td>
+<td>0.08529</td>
+<td>9%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$610</td>
+<td>2026-01-02</td>
+<td>106,327</td>
+<td>12,351</td>
+<td>$0.11M</td>
+<td>-0.012</td>
+<td>0.02229</td>
+<td>4%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$619</td>
+<td>2026-01-02</td>
+<td>106,004</td>
+<td>10,576</td>
+<td>$0.11M</td>
+<td>0.015</td>
+<td>0.01427</td>
+<td>8%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="call">CALL</td>
+<td>$623</td>
+<td>2026-01-02</td>
+<td>99,656</td>
+<td>8,433</td>
+<td>$0.10M</td>
+<td>0.007</td>
+<td>0.00469</td>
+<td>12%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$683</td>
+<td>2026-01-05</td>
+<td>92,158</td>
+<td>1,436</td>
+<td>$17.51M</td>
+<td>0.534</td>
+<td>0.08742</td>
+<td>7%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$620</td>
+<td>2026-01-02</td>
+<td>86,503</td>
+<td>6,910</td>
+<td>$60.55M</td>
+<td>-1.000</td>
+<td>0.00000</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$619</td>
+<td>2026-01-02</td>
+<td>84,900</td>
+<td>3,661</td>
+<td>$50.43M</td>
+<td>-1.000</td>
+<td>0.00000</td>
+<td>1%</td>
+</tr><tr>
+<td><strong>QQQ</strong></td>
+<td class="put">PUT</td>
+<td>$609</td>
+<td>2026-01-02</td>
+<td>83,516</td>
+<td>16,421</td>
+<td>$0.08M</td>
+<td>-0.020</td>
+<td>0.02363</td>
+<td>6%</td>
+</tr><tr>
+<td><strong>SPY</strong></td>
+<td class="call">CALL</td>
+<td>$684</td>
+<td>2026-01-05</td>
+<td>83,131</td>
+<td>3,380</td>
+<td>$11.31M</td>
+<td>0.438</td>
+<td>0.09997</td>
+<td>6%</td>
+</tr></tbody></table>
+<div class="footer"><p>⚠️ Educational purposes only. Data: Alpha Vantage Historical Options API. © 2026 AlphaOne LLC</p></div>
+</div></body></html>
